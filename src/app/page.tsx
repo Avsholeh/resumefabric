@@ -1,8 +1,11 @@
+import MainNav from "@/components/shared/main-nav";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default function Home() {
     return (
+        <>
+        <MainNav />
         <main className="flex min-h-screen flex-col items-center">
             <div className="my-10 flex flex-col items-center justify-between">
                 <div className="space-y-5 px-2 text-center md:px-0">
@@ -14,5 +17,6 @@ export default function Home() {
                 </div>
             </div>
         </main>
+        </>
     );
 }
