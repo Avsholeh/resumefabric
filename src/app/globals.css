@@ -58,6 +58,50 @@
     }
 }
 
+/* For Webkit-based browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+/* For Webkit-based browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f0f0f0; /* Light background for the track */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #ccc; /* Light color for the scrollbar thumb */
+    border-radius: 6px; /* Rounded corners for the thumb */
+    border: 2px solid #f0f0f0; /* Padding around the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #bbb; /* Slightly darker shade when hovered */
+}
+
+/* For Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #ccc #f0f0f0;
+}
+
+.resume-container {
+    overflow: auto;
+}
+
+.resume-container::-webkit-scrollbar {
+    display: none;
+}
+
+.resume-container {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
 .px-main {
     @apply px-3 md:px-10 lg:px-48;
 }
