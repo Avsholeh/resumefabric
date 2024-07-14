@@ -12,29 +12,29 @@ export default function FormButtonGroup({ nextURL, prevURL, showSkip }: Props): 
     return (
         <div className="mb-3 flex justify-between">
             <Button type="button">
-                <LayoutGrid className="h-4 w-4 me-2" />
+                <LayoutGrid className="me-2 h-4 w-4" />
                 <span>Templates</span>
             </Button>
             <div className="flex gap-1">
                 {prevURL && (
                     <Button asChild type="button">
                         <Link href={prevURL} className="btn btn-outline btn-primary">
-                            <ArrowLeft className="h-4 w-4 me-2" />
+                            <ArrowLeft className="me-2 h-4 w-4" />
                             <span>Prev</span>
                         </Link>
                     </Button>
                 )}
                 {showSkip && (
                     <Button asChild type="button">
-                    <Link href={nextURL} className="btn btn-outline btn-primary">
-                        <span>Skip</span>
-                        <FastForward className="h-4 w-4 ms-2" />
-                    </Link>
+                        <Link href={nextURL} className="btn btn-outline btn-primary">
+                            <span>Skip</span>
+                            <FastForward className="ms-2 h-4 w-4" />
+                        </Link>
                     </Button>
                 )}
                 <Button type="submit">
                     <span>Next</span>
-                    <ArrowRight className="h-4 w-4 ms-2" />
+                    <ArrowRight className="ms-2 h-4 w-4" />
                 </Button>
             </div>
         </div>
