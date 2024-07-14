@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function GettingStarted() {
     return (
-        <div className="px-content flex flex-col items-center">
+        <div className="px-main flex flex-col items-center">
             <div className="prose my-3 text-center">
                 <h1 className="my-2 text-3xl">Choose a Template</h1>
                 <p>Select a color and template to get started</p>

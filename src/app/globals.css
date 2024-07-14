@@ -58,10 +58,10 @@
     }
 }
 
-.px-content {
+.px-main {
     @apply px-3 md:px-10 lg:px-48;
 }
 
-.px-editor {
+.px-app {
     @apply px-3 md:px-5 lg:px-7;
 }
