@@ -16,9 +16,9 @@ import ToggleTheme from "./toggle-theme";
 export default function MainNav() {
     const isLoggedIn = false; // Replace with auth logic
     return (
-        <header className="px-content sticky top-0 flex h-16 w-full items-center justify-between gap-4 border-b bg-background">
-            <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-                <Link href="#" className="flex items-center gap-2 text-lg font-semibold md:text-base">
+        <header className="px-content sticky top-0 flex h-16 w-full items-center justify-between gap-4 border-b bg-background mb-3">
+            <nav className="hidden flex-col gap-6 text-lg font-medium lg:flex lg:flex-row lg:items-center lg:gap-5 lg:text-sm lg:gap-6">
+                <Link href="/" className="flex items-center gap-2 text-lg font-semibold lg:text-base">
                     <LibraryBig className="mr-1 h-6 w-6" /> ResumeFabric
                     <span className="sr-only">ResumeFabric</span>
                 </Link>
@@ -37,7 +37,7 @@ export default function MainNav() {
             </nav>
             <Sheet>
                 <SheetTrigger asChild>
-                    <Button variant="outline" size="icon" className="shrink-0 md:hidden">
+                    <Button variant="outline" size="icon" className="shrink-0 lg:hidden">
                         <Menu className="h-5 w-5" />
                         <span className="sr-only">Toggle navigation menu</span>
                     </Button>
