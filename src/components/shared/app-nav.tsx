@@ -1,3 +1,3 @@
 export default function AppNav() {
-  return <div>Appnav</div>
+    return <div>Appnav</div>;
 }

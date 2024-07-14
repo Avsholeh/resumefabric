@@ -59,9 +59,9 @@ function PickButton(): React.ReactElement {
                     <Palette className="h-3 w-3 text-gray-500 md:h-6 md:w-6" />
                 </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className=" mt-2 p-2 flex flex-col space-y-4 items-center">
+            <DropdownMenuContent className="mt-2 flex flex-col items-center space-y-4 p-2">
                 <HexColorPicker />
-                <Input className="w-full max-w-xs disabled:cursor-text text-center" value={"#fff"} disabled/>
+                <Input className="w-full max-w-xs text-center disabled:cursor-text" value={"#fff"} disabled />
             </DropdownMenuContent>
         </DropdownMenu>
     );
