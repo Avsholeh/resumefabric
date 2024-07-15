@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function PersonalDetailsLoading() {
+export default function WorkExperienceLoading() {
     return (
         <div className="h-screen w-full gap-3 md:gap-5 lg:flex lg:gap-7">
             <div className="flex h-[70%] w-full flex-col gap-3 lg:w-1/2">
