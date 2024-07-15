@@ -1,8 +1,6 @@
-import { cn } from "@/lib/utils";
-
 export default function ClassicTemplate(): React.ReactElement {
     return (
-        <div className={cn("border p-10 font-serif text-sm md:p-20")}>
+        <div className="border p-10 font-serif text-sm md:p-20">
             <header className="mb-5">
                 <div className="text-lg font-bold">Chris Candidate</div>
                 <div className="font-bold">Human Resource Manager</div>

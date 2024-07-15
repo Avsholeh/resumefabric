@@ -11,7 +11,7 @@ export default function useThemeSwitch() {
     }, []);
 
     if (!mounted) {
-        return { theme: "system", setTheme: () => {} };
+        return { theme: "light", setTheme: () => {} };
     }
 
     return { theme, setTheme };
