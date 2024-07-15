@@ -8,9 +8,7 @@ export default function ResumeLayout({
     return (
         <>
             <AppNav />
-            <div className="px-app flex flex-col items-center">
-                {children}
-            </div>
+            <div className="px-app flex flex-col items-center">{children}</div>
         </>
     );
 }
