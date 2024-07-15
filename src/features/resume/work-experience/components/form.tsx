@@ -241,7 +241,7 @@ export default function WorkExperienceForm(): React.ReactElement {
                     </CardContent>
                 </Card>
 
-                <div className="flex w-full justify-end mb-20">
+                <div className="mb-20 flex w-full justify-end">
                     <Button type="button" variant={"ghost"} onClick={() => append(WorkExperienceDefaultValues)}>
                         + Add More Work Experience
                     </Button>

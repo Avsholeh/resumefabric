@@ -11,7 +11,7 @@ type DateSelectorProps = {
         value: string | null;
         onChange: (date: string | undefined) => void;
     };
-}
+};
 
 export default function DatePicker({ field }: DateSelectorProps) {
     return (

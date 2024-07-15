@@ -65,7 +65,7 @@ export default function SocialLinks() {
                 </Card>
             ))}
 
-            <div className="flex justify-end mb-20">
+            <div className="mb-20 flex justify-end">
                 <Button type="button" variant={"ghost"} onClick={() => append({ desc: "", link: "" })}>
                     + Add Social Links
                 </Button>
