@@ -6,9 +6,11 @@ export default function ResumeLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <div className="px-app flex flex-col items-center">
+        <>
             <AppNav />
-            {children}
-        </div>
+            <div className="px-app flex flex-col items-center">
+                {children}
+            </div>
+        </>
     );
 }
