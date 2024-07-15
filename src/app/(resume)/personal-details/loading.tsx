@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function PersonalDetailsLoading() {
     return (
-        <div className="h-screen w-full gap-3 md:gap-5 lg:flex lg:gap-7">
+        <div className="h-[25rem] w-full gap-3 md:h-[40rem] md:gap-5 lg:flex lg:gap-7">
             <div className="flex h-[70%] w-full flex-col gap-3 lg:w-1/2">
                 <div className="flex justify-between gap-3">
                     <Skeleton className="h-10 w-28 rounded-xl" />
