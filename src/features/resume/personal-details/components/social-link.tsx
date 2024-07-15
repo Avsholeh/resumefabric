@@ -57,7 +57,7 @@ export default function SocialLinks() {
                         </div>
 
                         <div className="flex w-full justify-end">
-                            <Button type="button" variant="outline" size="icon" onClick={() => remove(index)}>
+                            <Button type="button" variant="destructive" size="icon" onClick={() => remove(index)}>
                                 <Trash className="h-4 w-4" />
                             </Button>
                         </div>
@@ -65,7 +65,7 @@ export default function SocialLinks() {
                 </Card>
             ))}
 
-            <div className="mb-20 flex justify-end">
+            <div className="flex justify-end">
                 <Button type="button" variant={"ghost"} onClick={() => append({ desc: "", link: "" })}>
                     + Add Social Links
                 </Button>

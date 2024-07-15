@@ -36,7 +36,7 @@ export default function PersonalDetailsForm(): React.ReactElement {
             >
                 <FormButtonGroup nextURL="/work-experience" prevURL="/getting-started" showSkip />
 
-                <Card>
+                <Card className="mb-20">
                     <CardHeader>
                         <CardTitle>Personal Details</CardTitle>
                         <CardDescription>

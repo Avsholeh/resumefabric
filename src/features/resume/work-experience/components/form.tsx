@@ -28,8 +28,6 @@ export default function WorkExperienceForm(): React.ReactElement {
         },
     });
 
-    const i = [];
-
     const { fields, append, remove } = useFieldArray({
         control: form.control,
         name: "workExperiences",
@@ -48,7 +46,7 @@ export default function WorkExperienceForm(): React.ReactElement {
 
     const onSubmit: SubmitHandler<WorkExperienceArraySchemaField> = async (fieldValue) => {
         console.log(fieldValue);
-        // router.push("/education");
+        router.push("/education");
     };
 
     return (
@@ -56,7 +54,7 @@ export default function WorkExperienceForm(): React.ReactElement {
             <form id="work-experience" onSubmit={form.handleSubmit(onSubmit)}>
                 <FormButtonGroup nextURL="/education" prevURL="/personal-details" showSkip />
 
-                <Card className="mb-3">
+                <Card className="mb-20">
                     <CardHeader>
                         <CardTitle>Work Experience</CardTitle>
                         <CardDescription>Provide details about your most recent job.</CardDescription>
@@ -223,29 +221,31 @@ export default function WorkExperienceForm(): React.ReactElement {
                                                 />
                                             </div>
 
-                                            <div className="flex w-full justify-end">
-                                                <Button
-                                                    type="button"
-                                                    variant={"destructive"}
-                                                    onClick={() => remove(index)}
-                                                    disabled={fields.length === 1}
-                                                >
-                                                    <Trash className="h-4 w-4 text-white" />
-                                                </Button>
-                                            </div>
+                                            {fields.length > 1 && (
+                                                <div className="flex w-full justify-end">
+                                                    <Button
+                                                        type="button"
+                                                        variant={"destructive"}
+                                                        onClick={() => remove(index)}
+                                                        size={"icon"}
+                                                    >
+                                                        <Trash className="h-4 w-4" />
+                                                    </Button>
+                                                </div>
+                                            )}
                                         </CollapsibleContent>
                                     </Collapsible>
                                 </CardContent>
                             </Card>
                         ))}
+
+                        <div className="flex w-full justify-end md:mb-0">
+                            <Button type="button" variant={"ghost"} onClick={() => append(WorkExperienceDefaultValues)}>
+                                + Add More Work Experience
+                            </Button>
+                        </div>
                     </CardContent>
                 </Card>
-
-                <div className="mb-20 flex w-full justify-end">
-                    <Button type="button" variant={"ghost"} onClick={() => append(WorkExperienceDefaultValues)}>
-                        + Add More Work Experience
-                    </Button>
-                </div>
             </form>
         </Form>
     );

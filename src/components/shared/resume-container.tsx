@@ -8,9 +8,7 @@ export default function ResumeContainer({ form, template }: Props): React.ReactE
         <div className="w-full gap-3 md:gap-5 lg:flex lg:gap-7">
             <div className="mb-3 w-full lg:w-1/2">{form}</div>
             <div className="mb-3 hidden w-full md:flex lg:w-1/2">
-                <div className="resume-container h-5/6 w-full overflow-auto border border-slate-200 shadow-md">
-                    {template}
-                </div>
+                <div className="resume-container w-full overflow-auto">{template}</div>
             </div>
         </div>
     );
