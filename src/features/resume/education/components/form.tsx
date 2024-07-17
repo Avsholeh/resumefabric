@@ -1,5 +1,6 @@
 "use client";
 
+import BtnDelete from "@/components/shared/btn-delete";
 import DatePicker from "@/components/shared/date-picker";
 import FormButtonGroup from "@/components/shared/form-button-group";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronsUpDown, Trash } from "lucide-react";
+import { ChevronsUpDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
@@ -239,14 +240,7 @@ export default function EducationForm(): React.ReactElement {
                                             </div>
                                             {educations.length > 1 && (
                                                 <div className="flex w-full justify-end">
-                                                    <Button
-                                                        type="button"
-                                                        variant={"destructive"}
-                                                        onClick={() => remove(index)}
-                                                        size={"icon"}
-                                                    >
-                                                        <Trash className="h-4 w-4" />
-                                                    </Button>
+                                                    <BtnDelete onClick={() => remove(index)} />
                                                 </div>
                                             )}
                                         </CollapsibleContent>

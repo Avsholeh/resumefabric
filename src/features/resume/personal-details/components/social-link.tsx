@@ -1,10 +1,10 @@
 "use client";
 
+import BtnDelete from "@/components/shared/btn-delete";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Trash } from "lucide-react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 
 export default function SocialLinks() {
@@ -57,9 +57,7 @@ export default function SocialLinks() {
                         </div>
 
                         <div className="flex w-full justify-end">
-                            <Button type="button" variant="destructive" size="icon" onClick={() => remove(index)}>
-                                <Trash className="h-4 w-4" />
-                            </Button>
+                            <BtnDelete onClick={() => remove(index)} />
                         </div>
                     </CardContent>
                 </Card>
