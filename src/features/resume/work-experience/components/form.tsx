@@ -176,7 +176,12 @@ export default function WorkExperienceForm(): React.ReactElement {
                                                         <FormItem className="flex w-full flex-col md:w-1/2">
                                                             <FormLabel>End Date</FormLabel>
                                                             <FormControl>
-                                                                <DatePicker field={field} disabled={!!watchField(index, 'currentlyWorkingHere')}/>
+                                                                <DatePicker
+                                                                    field={field}
+                                                                    disabled={
+                                                                        !!watchField(index, "currentlyWorkingHere")
+                                                                    }
+                                                                />
                                                             </FormControl>
                                                             <FormDescription />
                                                             <FormMessage />
