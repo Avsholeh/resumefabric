@@ -11,9 +11,10 @@ type DateSelectorProps = {
         value: string | null;
         onChange: (date: string | undefined) => void;
     };
+    disabled?: boolean;
 };
 
-export default function DatePicker({ field }: DateSelectorProps) {
+export default function DatePicker({ field, disabled }: DateSelectorProps) {
     return (
         <Popover>
             <PopoverTrigger asChild>
@@ -21,6 +22,7 @@ export default function DatePicker({ field }: DateSelectorProps) {
                     <Button
                         variant={"outline"}
                         className={cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
+                        disabled={disabled}
                     >
                         {!!field.value ? field.value : <span>Pick a date</span>}
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
