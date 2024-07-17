@@ -6,8 +6,8 @@ export default function GettingStarted() {
     return (
         <>
             <div className="my-3 text-center">
-                <h1 className="my-2 text-3xl">Choose a Template</h1>
-                <p>Select a color and template to get started</p>
+                <h1 className="my-2 text-3xl">Getting Started</h1>
+                <p>Choose a color and template to start with. You can always change it later.</p>
             </div>
 
             <div className="my-5 flex">
