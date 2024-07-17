@@ -1,4 +1,4 @@
-import MainNav from "@/components/shared/main-nav";
+import MainNav from "@/components/shared/main-nav/main-nav";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 

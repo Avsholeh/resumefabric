@@ -1,6 +1,3 @@
-import { CircleUser, LibraryBig, Menu, Package2 } from "lucide-react";
-import Link from "next/link";
-
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -11,29 +8,18 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import ToggleTheme from "./toggle-theme";
+import { CircleUser, LibraryBig, Menu } from "lucide-react";
+import Link from "next/link";
+import ToggleTheme from "../toggle-theme";
+import MenuList from "./menu-list";
 
 export default function MainNav() {
-    const isLoggedIn = false; // Replace with auth logic
+    const isLoggedIn = false; // TODO: Replace with auth logic
     return (
         <header className="px-main sticky top-0 mb-3 flex h-16 w-full items-center justify-between gap-4 border-b bg-background">
             <nav className="hidden flex-col gap-6 text-lg font-medium lg:flex lg:flex-row lg:items-center lg:gap-6 lg:text-sm">
-                <Link href="/" className="flex items-center gap-2 text-lg font-semibold lg:text-base">
-                    <LibraryBig className="mr-1 h-6 w-6" /> ResumeFabric
-                    <span className="sr-only">ResumeFabric</span>
-                </Link>
-                <Link href="#" className="text-muted-foreground transition-colors hover:text-foreground">
-                    Resume Builder
-                </Link>
-                <Link href="#" className="text-muted-foreground transition-colors hover:text-foreground">
-                    Resume Examples
-                </Link>
-                <Link href="#" className="text-muted-foreground transition-colors hover:text-foreground">
-                    Cover Letter Builder
-                </Link>
-                <Link href="#" className="text-muted-foreground transition-colors hover:text-foreground">
-                    Cover Letter Examples
-                </Link>
+                <Brand />
+                <MenuList />
             </nav>
             <Sheet>
                 <SheetTrigger asChild>
@@ -44,22 +30,8 @@ export default function MainNav() {
                 </SheetTrigger>
                 <SheetContent side="left">
                     <nav className="grid gap-6 text-lg font-medium">
-                        <Link href="#" className="flex items-center gap-2 text-lg font-semibold">
-                            <Package2 className="h-6 w-6" />
-                            <span className="sr-only">ResumeFabric</span>
-                        </Link>
-                        <Link href="#" className="text-muted-foreground hover:text-foreground">
-                            Resume Builder
-                        </Link>
-                        <Link href="#" className="text-muted-foreground hover:text-foreground">
-                            Resume Examples
-                        </Link>
-                        <Link href="#" className="text-muted-foreground hover:text-foreground">
-                            Cover Letter Builder
-                        </Link>
-                        <Link href="#" className="text-muted-foreground hover:text-foreground">
-                            Cover Letter Examples
-                        </Link>
+                        <Brand />
+                        <MenuList />
                     </nav>
                 </SheetContent>
             </Sheet>
@@ -85,12 +57,24 @@ export default function MainNav() {
                 </div>
             ) : (
                 <div className="flex items-center justify-end gap-4 md:gap-2 lg:gap-4">
-                    <Button className="border border-primary bg-background text-primary hover:bg-primary hover:text-primary-foreground">
-                        Build My Resume
+                    <Button
+                        asChild
+                        className="border border-primary bg-background text-primary hover:bg-primary hover:text-primary-foreground"
+                    >
+                        <Link href="/getting-started">Build My Resume</Link>
                     </Button>
                     <ToggleTheme />
                 </div>
             )}
         </header>
+    );
+}
+
+function Brand(): React.ReactElement {
+    return (
+        <Link href="/" className="flex items-center gap-2 text-lg font-semibold lg:text-base">
+            <LibraryBig className="mr-1 h-6 w-6" /> ResumeFabric
+            <span className="sr-only">ResumeFabric</span>
+        </Link>
     );
 }
