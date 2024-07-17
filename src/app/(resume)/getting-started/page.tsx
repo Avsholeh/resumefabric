@@ -16,7 +16,7 @@ export default function GettingStarted() {
 
             <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
                 {[1, 2, 3, 4].map((_, i) => (
-                    <div key={i} className="w-full rounded-md border border-gray-400 p-3 text-center">
+                    <div key={i} className="w-full rounded-md border p-3 text-center">
                         <p className="mb-5">Template #{i + 1}</p>
                         <div className="flex flex-col space-y-3">
                             <Button asChild>
