@@ -34,7 +34,7 @@ export default function PersonalDetailsForm(): React.ReactElement {
                 className="flex w-full flex-col"
                 autoComplete="true"
             >
-                <FormButtonGroup nextURL="/work-experience" prevURL="/getting-started" showSkip />
+                <FormButtonGroup nextURL="/work-experience" />
 
                 <Card className="mb-20">
                     <CardHeader>
