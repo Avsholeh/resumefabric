@@ -35,6 +35,17 @@ export default function DatePicker({ field, disabled }: DateSelectorProps) {
                     onSelect={(date) => field.onChange(date ? format(date, "PPP") : undefined)}
                     disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
                     initialFocus
+                    captionLayout="dropdown"
+                    fromYear={1900}
+                    toYear={2024}
+                    classNames={{
+                        caption: "relative flex items-center justify-center px-10 pt-1",
+                        caption_label: "flex items-center gap-2 text-sm font-medium",
+                        caption_dropdowns: "flex gap-4 [&_.rdp-vhidden]:hidden",
+                        dropdown_month: "relative inline-flex items-center",
+                        dropdown_year: "relative inline-flex items-center",
+                        dropdown: "absolute inset-0 z-10 w-full cursor-pointer appearance-none opacity-0",
+                    }}
                 />
             </PopoverContent>
         </Popover>
