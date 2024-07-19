@@ -52,14 +52,18 @@ export default function SkillsForm(): React.ReactElement {
                         <CardDescription>List your key skills and areas of expertise.</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <div className="flex">
+                        <div className="mb-5 flex">
                             <FormField
                                 name="showExperienceLevel"
                                 control={form.control}
                                 render={({ field }) => (
                                     <FormItem className="flex items-center space-x-2">
                                         <FormControl>
-                                            <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                                            <Checkbox
+                                                checked={field.value}
+                                                onCheckedChange={field.onChange}
+                                                className="mt-2"
+                                            />
                                         </FormControl>
                                         <FormLabel>Show experience level</FormLabel>
                                     </FormItem>
@@ -79,7 +83,7 @@ export default function SkillsForm(): React.ReactElement {
                             />
                         ))}
 
-                        <div className="flex w-full justify-end mt-3">
+                        <div className="mt-3 flex w-full justify-end">
                             <Button
                                 type="button"
                                 variant={"ghost"}

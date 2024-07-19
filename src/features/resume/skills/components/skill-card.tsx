@@ -1,6 +1,8 @@
 import BtnDelete from "@/components/shared/btn-delete";
+import { Card, CardContent } from "@/components/ui/card";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import {
     Controller,
     type Control,
@@ -29,42 +31,48 @@ export default function SkillCard({
     remove,
 }: SkillCardProps): React.ReactElement {
     return (
-        <div key={skill.id} className="card bg-base-100 mt-3 w-full border border-slate-300 py-3">
-            <div className="card-body p-4">
+        <Card key={skill.id} className="mt-3 py-3">
+            <CardContent className="pt-6">
                 <div className="flex flex-col items-center justify-between gap-5 md:flex-row">
-                    <div>#{index + 1}</div>
-                    <label className="form-control w-full">
+                    <div className="flex w-full items-center gap-5">
                         <FormField
                             name={`skills.${index}.name`}
                             control={control}
                             defaultValue={skill.name}
                             render={({ field }) => (
-                                <FormItem>
+                                <FormItem className="w-full">
                                     <FormControl>
                                         <Input {...field} />
                                     </FormControl>
                                 </FormItem>
                             )}
                         />
-                    </label>
-                    {!!watch("showExperienceLevel") && (
-                        <Controller
-                            name={`skills.${index}.experienceLevel`}
-                            control={control}
-                            defaultValue={skill.experienceLevel}
-                            render={({ field }) => (
-                                <RatingStars
-                                    onRatingChange={(value) => field.onChange(value)}
-                                    defaultValue={field.value}
-                                />
-                            )}
-                        />
-                    )}
-                    <div className="flex w-full justify-end md:w-auto">
-                        <BtnDelete disabled={!isDelete} onClick={() => remove(index)} />
+                    </div>
+                    <div
+                        className={cn(
+                            "flex w-full items-center gap-5 md:w-auto",
+                            !!watch("showExperienceLevel") ? "justify-between" : "justify-end"
+                        )}
+                    >
+                        {!!watch("showExperienceLevel") && (
+                            <Controller
+                                name={`skills.${index}.experienceLevel`}
+                                control={control}
+                                defaultValue={skill.experienceLevel}
+                                render={({ field }) => (
+                                    <RatingStars
+                                        onRatingChange={(value) => field.onChange(value)}
+                                        defaultValue={field.value}
+                                    />
+                                )}
+                            />
+                        )}
+                        <div className="flex justify-end md:w-auto">
+                            <BtnDelete disabled={!isDelete} onClick={() => remove(index)} />
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </CardContent>
+        </Card>
     );
 }
