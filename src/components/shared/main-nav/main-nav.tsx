@@ -16,7 +16,7 @@ import MenuList from "./menu-list";
 export default function MainNav() {
     const isLoggedIn = false; // TODO: Replace with auth logic
     return (
-        <header className="px-main sticky top-0 mb-3 flex h-16 w-full items-center justify-between gap-4 border-b bg-background">
+        <header className="px-main mb-3 flex h-16 w-full items-center justify-between gap-4 border-b bg-background">
             <nav className="hidden flex-col gap-6 text-lg font-medium lg:flex lg:flex-row lg:items-center lg:gap-6 lg:text-sm">
                 <Brand />
                 <MenuList />

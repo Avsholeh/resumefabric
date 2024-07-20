@@ -16,7 +16,7 @@ import ToggleTheme from "./toggle-theme";
 export default function AppNav() {
     const isLoggedIn = false; // Replace with auth logic
     return (
-        <header className="px-app sticky top-0 z-10 mb-3 flex h-16 w-full items-center justify-between gap-4 border-b bg-background">
+        <header className="px-app z-10 mb-3 flex h-16 w-full items-center justify-between gap-4 border-b bg-background">
             <nav className="hidden flex-col gap-6 text-lg font-medium lg:flex lg:flex-row lg:items-center lg:gap-6 lg:text-sm">
                 <Link href="/" className="flex items-center gap-2 text-lg font-semibold lg:text-base">
                     <LibraryBig className="mr-1 h-6 w-6" /> ResumeFabric
