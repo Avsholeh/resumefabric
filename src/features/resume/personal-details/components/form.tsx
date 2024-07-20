@@ -4,69 +4,34 @@ import FormButtonGroup from "@/components/shared/form-button-group";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import useResume from "@/hooks/use-resume";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLocalStorage } from "@uidotdev/usehooks";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { ResumeSchemaArrayField } from "../../schema";
 import { PersonalDetailDefaultValues, PersonalDetailSchema, PersonalDetailSchemaField } from "../schema";
 import SocialLinks from "./social-link";
 
 export default function PersonalDetailsForm(): React.ReactElement {
     const router = useRouter();
 
-    // Get the active resume from local storage
-    const [activeResume, setActiveResume] = useLocalStorage<string | null>("active-resume", null);
-
-    // Get the resume from local storage
-    const [resume, setResume] = useLocalStorage<ResumeSchemaArrayField>("resume", []);
+    // Use the useResume hook to get the resume and update the resume
+    const [resume, updateResume] = useResume();
 
     // Use the useForm hook
     // https://react-hook-form.com/api/useform
     const form = useForm<PersonalDetailSchemaField>({
         resolver: zodResolver(PersonalDetailSchema),
-        defaultValues: PersonalDetailDefaultValues,
+        defaultValues: resume?.personalDetails ? resume.personalDetails : PersonalDetailDefaultValues,
     });
 
     // Handle form submission
     const onSubmit: SubmitHandler<PersonalDetailSchemaField> = async (fieldValue) => {
-        // If there is no active resume, redirect to the getting started page to create a new resume
-        if (!activeResume) {
-            router.push("/getting-started");
-            return;
-        }
-
         // Update the resume in local storage with the latest personal details
-        setResume((prev) => {
-            const newResume = [...prev];
-
-            // Find the active resume and update the personal details
-            const activeResumeIndex = newResume.findIndex((r) => r.id === activeResume);
-            if (activeResumeIndex !== -1) {
-                newResume[activeResumeIndex].personalDetails = fieldValue;
-            } else {
-                // If the active resume is not found, create a new resume
-                newResume.push({ id: activeResume, personalDetails: fieldValue });
-            }
-
-            return newResume;
-        });
+        updateResume<{ personalDetails: PersonalDetailSchemaField }>({ personalDetails: fieldValue });
 
         // Redirect to the next step
         router.push("/work-experience");
     };
-
-    useEffect(() => {
-        // If there is a resume in local storage and the active resume is set
-        // then populate the form with selected resume personal details
-        if (resume.length > 0 && activeResume) {
-            const selectedResume = resume.find((r) => r.id === activeResume);
-            if (selectedResume && selectedResume.personalDetails) {
-                form.reset(selectedResume.personalDetails);
-            }
-        }
-    }, []);
 
     return (
         <Form {...form}>

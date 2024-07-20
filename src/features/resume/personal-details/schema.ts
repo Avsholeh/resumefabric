@@ -19,7 +19,7 @@ export const PersonalDetailSchema = z.object({
 });
 
 // Define default values for the personal details form
-export const PersonalDetailDefaultValues = {
+export const PersonalDetailDefaultValues: PersonalDetailSchemaField = {
     firstName: "",
     lastName: "",
     jobTitle: "",

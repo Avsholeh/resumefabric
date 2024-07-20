@@ -24,6 +24,11 @@ export const WorkExperienceDefaultValues = {
     workSummary: "",
 };
 
+// Define default values for the work experience form
+export const WorkExperienceArrayDefaultValues = {
+    workExperiences: [WorkExperienceDefaultValues],
+};
+
 // Create schema for the work experience array
 export const WorkExperienceArraySchema = z.object({
     workExperiences: z.array(WorkExperienceSchema),

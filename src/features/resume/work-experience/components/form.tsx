@@ -10,30 +10,43 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import useResume from "@/hooks/use-resume";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronsUpDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import { WorkExperienceArraySchema, type WorkExperienceArraySchemaField, WorkExperienceDefaultValues } from "../schema";
+import {
+    WorkExperienceArrayDefaultValues,
+    WorkExperienceArraySchema,
+    type WorkExperienceArraySchemaField,
+    WorkExperienceDefaultValues,
+} from "../schema";
 
 type watchFieldType = "positionTitle" | "companyName" | "startDate" | "endDate" | "currentlyWorkingHere";
 
 export default function WorkExperienceForm(): React.ReactElement {
     const router = useRouter();
+
+    // This hook is used to get and set the resume data
+    const [resume, updateResume] = useResume();
+
+    // This state is used to keep track of the open state of the collapsible items
     const [openItems, setOpenItems] = useState<{ [key: string]: boolean }>({});
+
     const form = useForm<WorkExperienceArraySchemaField>({
         resolver: zodResolver(WorkExperienceArraySchema),
-        defaultValues: {
-            workExperiences: [WorkExperienceDefaultValues],
-        },
+        defaultValues: resume?.workExperiences
+            ? { workExperiences: [...resume.workExperiences] }
+            : WorkExperienceArrayDefaultValues,
     });
 
-    const { fields, append, remove } = useFieldArray({
+    const { fields, append, remove, replace } = useFieldArray({
         control: form.control,
         name: "workExperiences",
     });
 
+    // Function to handle the open state of the collapsible items
     const handleOpenItemsChange = (id: string) => {
         setOpenItems((prev) => ({
             ...prev,
@@ -41,12 +54,13 @@ export default function WorkExperienceForm(): React.ReactElement {
         }));
     };
 
+    // Utility function to watch the field values
     const watchField = (index: number, field: watchFieldType) => {
         return form.watch(`workExperiences.${index}.${field}`);
     };
 
     const onSubmit: SubmitHandler<WorkExperienceArraySchemaField> = async (fieldValue) => {
-        console.log(fieldValue);
+        updateResume<WorkExperienceArraySchemaField>(fieldValue);
         router.push("/education");
     };
 
