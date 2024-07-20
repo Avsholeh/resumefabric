@@ -26,7 +26,7 @@ export default function AdditionalForm(): React.ReactElement {
     };
 
     const onSubmit: SubmitHandler<AdditionalSchemaField> = (fieldValue) => {
-        console.log(fieldValue);
+        console.log("onSubmit", fieldValue);
     };
 
     return (

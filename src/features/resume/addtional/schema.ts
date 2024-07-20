@@ -15,14 +15,18 @@ export const AdditionalSchema = z.object({
     // certifications: z.boolean(),
     // accomplishments: z.boolean(),
     // volunteering: z.boolean(),
-    software: z.object({
-        section: z.string(),
-        items: z.array(SoftwareSchema),
-    }),
-    language: z.object({
-        section: z.string(),
-        items: z.array(LanguageSchema),
-    }),
+    software: z
+        .object({
+            section: z.string(),
+            items: z.array(SoftwareSchema).optional(),
+        })
+        .optional(),
+    language: z
+        .object({
+            section: z.string(),
+            items: z.array(LanguageSchema).optional(),
+        })
+        .optional(),
     // references: z.boolean(),
 });
 

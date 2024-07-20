@@ -35,7 +35,7 @@ export default function SoftwareForm({ fields }: Props): React.ReactElement {
                                     </FormItem>
                                 )}
                             />
-                            <Button variant={"ghost"} size={"sm"} onClick={() => setIsEdit(!isEdit)}>
+                            <Button type="button" variant={"ghost"} size={"sm"} onClick={() => setIsEdit(!isEdit)}>
                                 <CheckIcon className="h-4 w-4" />
                             </Button>
                         </>
