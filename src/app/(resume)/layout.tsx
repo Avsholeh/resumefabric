@@ -11,7 +11,7 @@ export default function ResumeLayout({
      * If the environment is development, wrap the children with the WebvitalProvider.
      * Otherwise, render the children without the WebvitalProvider.
      */
-    if ((process.env.NODE_ENV as string) === "development") {
+    if ((process.env.NODE_ENV as string) === "development" && (process.env.ENABLE_WEBVITAL as string)) {
         return (
             <WebvitalProvider>
                 <AppNav />
