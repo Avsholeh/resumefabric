@@ -59,11 +59,11 @@ export default function PersonalDetailsForm(): React.ReactElement {
 
     useEffect(() => {
         // If there is a resume in local storage and the active resume is set
-        // then populate the form with the latest resume data
+        // then populate the form with selected resume personal details
         if (resume.length > 0 && activeResume) {
-            const latestResume = resume.find((r) => r.id === activeResume);
-            if (latestResume && latestResume.personalDetails) {
-                form.reset(latestResume.personalDetails);
+            const selectedResume = resume.find((r) => r.id === activeResume);
+            if (selectedResume && selectedResume.personalDetails) {
+                form.reset(selectedResume.personalDetails);
             }
         }
     }, []);
