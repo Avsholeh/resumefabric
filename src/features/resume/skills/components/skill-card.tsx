@@ -1,4 +1,5 @@
 import BtnDelete from "@/components/shared/btn-delete";
+import RatingStars from "@/components/shared/rating-stars";
 import { Card, CardContent } from "@/components/ui/card";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -11,7 +12,6 @@ import {
     type UseFormWatch,
 } from "react-hook-form";
 import { type SkillArrayField } from "../schema";
-import RatingStars from "./rating-stars";
 
 type SkillCardProps = {
     skill: FieldArrayWithId<SkillArrayField>;
