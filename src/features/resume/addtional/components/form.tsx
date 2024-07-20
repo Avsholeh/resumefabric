@@ -33,7 +33,7 @@ export default function AdditionalForm(): React.ReactElement {
 
     const onSubmit: SubmitHandler<AdditionalSchemaField> = (fieldValue) => {
         console.log("onSubmit", fieldValue);
-        router.push('/summary');
+        router.push("/summary");
     };
 
     return (
