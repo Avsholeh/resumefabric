@@ -5,6 +5,8 @@ export const SoftwareSchema = z.object({
     level: z.number().int().min(1).max(5),
 });
 
+// level: Novice, Beginner, Skillful, Experienced, Expert
+
 export const LanguageSchema = z.object({
     name: z.string(),
     level: z.number().int().min(1).max(5),

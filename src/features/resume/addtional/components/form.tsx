@@ -14,7 +14,11 @@ export default function AdditionalForm(): React.ReactElement {
         defaultValues: AdditionalSchemaDefaultValue,
     });
 
-    const { fields: softwareFields, append: softwareAppend } = useFieldArray({
+    const {
+        fields: softwareFields,
+        append: softwareAppend,
+        remove: softwareRemove,
+    } = useFieldArray({
         control: form.control,
         name: "software.items",
     });
@@ -64,7 +68,9 @@ export default function AdditionalForm(): React.ReactElement {
                     </CardContent>
                 </Card>
 
-                {softwareFields.length > 0 && <SoftwareForm fields={softwareFields} />}
+                {softwareFields.length > 0 && (
+                    <SoftwareForm fields={softwareFields} remove={softwareRemove} append={softwareAppend} />
+                )}
             </form>
         </Form>
     );

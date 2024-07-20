@@ -1,3 +1,4 @@
+import BtnDelete from "@/components/shared/btn-delete";
 import RatingStars from "@/components/shared/rating-stars";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,14 +7,21 @@ import { Input } from "@/components/ui/input";
 import { useClickOutside } from "@/hooks/use-click-outside";
 import { CheckIcon, PencilIcon } from "lucide-react";
 import { useRef, useState } from "react";
-import { FieldArrayWithId, useFormContext } from "react-hook-form";
-import { SoftwareSchemaField } from "../schema";
+import {
+    type FieldArrayWithId,
+    type UseFieldArrayAppend,
+    type UseFieldArrayRemove,
+    useFormContext,
+} from "react-hook-form";
+import { AdditionalSchemaField, SoftwareSchemaField } from "../schema";
 
 type Props = React.HTMLAttributes<HTMLDivElement> & {
     fields: FieldArrayWithId<SoftwareSchemaField>[];
+    append: UseFieldArrayAppend<AdditionalSchemaField>;
+    remove: UseFieldArrayRemove;
 };
 
-export default function SoftwareForm({ fields }: Props): React.ReactElement {
+export default function SoftwareForm({ fields, append, remove }: Props): React.ReactElement {
     const form = useFormContext();
     const [isEdit, setIsEdit] = useState(false);
     const titleRef = useRef(null);
@@ -72,8 +80,18 @@ export default function SoftwareForm({ fields }: Props): React.ReactElement {
                                 />
                             )}
                         />
+
+                        <div className="flex justify-end md:w-auto">
+                            <BtnDelete onClick={() => remove(index)} />
+                        </div>
                     </div>
                 ))}
+
+                <div className="mt-5 flex w-full justify-end">
+                    <Button type="button" variant={"ghost"} onClick={() => append({ name: "", level: 3 })}>
+                        + Add more software
+                    </Button>
+                </div>
             </CardContent>
         </Card>
     );
