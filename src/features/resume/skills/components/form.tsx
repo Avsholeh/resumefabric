@@ -44,7 +44,12 @@ export default function SkillsForm(): React.ReactElement {
     return (
         <Form {...form}>
             <form id="skills-form" onSubmit={form.handleSubmit(onSubmit)}>
-                <FormButtonGroup nextURL="/additional" prevURL="/education" showSkip />
+                <FormButtonGroup
+                    nextURL="/additional"
+                    prevURL="/education"
+                    showSkip
+                    isLoading={form.formState.isSubmitting}
+                />
 
                 <Card className="mb-20">
                     <CardHeader>

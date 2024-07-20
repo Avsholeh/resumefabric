@@ -53,7 +53,12 @@ export default function WorkExperienceForm(): React.ReactElement {
     return (
         <Form {...form}>
             <form id="work-experience" onSubmit={form.handleSubmit(onSubmit)}>
-                <FormButtonGroup nextURL="/education" prevURL="/personal-details" showSkip />
+                <FormButtonGroup
+                    nextURL="/education"
+                    prevURL="/personal-details"
+                    showSkip
+                    isLoading={form.formState.isSubmitting}
+                />
 
                 <Card className="mb-20">
                     <CardHeader>

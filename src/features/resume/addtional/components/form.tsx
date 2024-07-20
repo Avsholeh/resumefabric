@@ -32,7 +32,12 @@ export default function AdditionalForm(): React.ReactElement {
     return (
         <Form {...form}>
             <form id="additional-form" onSubmit={form.handleSubmit(onSubmit)}>
-                <FormButtonGroup nextURL="/summary" prevURL="/skills" showSkip />
+                <FormButtonGroup
+                    nextURL="/summary"
+                    prevURL="/skills"
+                    showSkip
+                    isLoading={form.formState.isSubmitting}
+                />
                 <Card className="mb-5">
                     <CardHeader>
                         <CardTitle>Additional</CardTitle>
