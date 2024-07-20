@@ -5,13 +5,22 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useLocalStorage } from "@uidotdev/usehooks";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { ResumeSchemaArrayField } from "../../schema";
 import { PersonalDetailDefaultValues, PersonalDetailSchema, PersonalDetailSchemaField } from "../schema";
 import SocialLinks from "./social-link";
 
 export default function PersonalDetailsForm(): React.ReactElement {
     const router = useRouter();
+
+    // Get the active resume from local storage
+    const [activeResume, setActiveResume] = useLocalStorage<string | null>("active-resume", null);
+
+    // Get the resume from local storage
+    const [resume, setResume] = useLocalStorage<ResumeSchemaArrayField>("resume", []);
 
     // Use the useForm hook
     // https://react-hook-form.com/api/useform
@@ -22,9 +31,42 @@ export default function PersonalDetailsForm(): React.ReactElement {
 
     // Handle form submission
     const onSubmit: SubmitHandler<PersonalDetailSchemaField> = async (fieldValue) => {
-        router.push("/work-experience"); // Redirect to the next step
-        console.log(fieldValue);
+        // If there is no active resume, redirect to the getting started page to create a new resume
+        if (!activeResume) {
+            router.push("/getting-started");
+            return;
+        }
+
+        // Update the resume in local storage with the latest personal details
+        setResume((prev) => {
+            const newResume = [...prev];
+
+            // Find the active resume and update the personal details
+            const activeResumeIndex = newResume.findIndex((r) => r.id === activeResume);
+            if (activeResumeIndex !== -1) {
+                newResume[activeResumeIndex].personalDetails = fieldValue;
+            } else {
+                // If the active resume is not found, create a new resume
+                newResume.push({ id: activeResume, personalDetails: fieldValue });
+            }
+
+            return newResume;
+        });
+
+        // Redirect to the next step
+        router.push("/work-experience");
     };
+
+    useEffect(() => {
+        // If there is a resume in local storage and the active resume is set
+        // then populate the form with the latest resume data
+        if (resume.length > 0 && activeResume) {
+            const latestResume = resume.find((r) => r.id === activeResume);
+            if (latestResume && latestResume.personalDetails) {
+                form.reset(latestResume.personalDetails);
+            }
+        }
+    }, []);
 
     return (
         <Form {...form}>
