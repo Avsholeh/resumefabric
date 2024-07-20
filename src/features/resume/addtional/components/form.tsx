@@ -4,11 +4,13 @@ import FormButtonGroup from "@/components/shared/form-button-group";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { AdditionalSchema, AdditionalSchemaDefaultValue, AdditionalSchemaField } from "../schema";
 import SoftwareForm from "./software-form";
 
 export default function AdditionalForm(): React.ReactElement {
+    const router = useRouter();
     const form = useForm<AdditionalSchemaField>({
         resolver: zodResolver(AdditionalSchema),
         defaultValues: AdditionalSchemaDefaultValue,
@@ -31,6 +33,7 @@ export default function AdditionalForm(): React.ReactElement {
 
     const onSubmit: SubmitHandler<AdditionalSchemaField> = (fieldValue) => {
         console.log("onSubmit", fieldValue);
+        router.push('/summary');
     };
 
     return (
