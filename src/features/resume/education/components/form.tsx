@@ -10,26 +10,33 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import useResume from "@/hooks/use-resume";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronsUpDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import { EducationArraySchema, type EducationArraySchemaField, EducationDefaultValues } from "../schema";
+import {
+    EducationArrayDefaultValues,
+    EducationArraySchema,
+    type EducationArraySchemaField,
+    EducationDefaultValues,
+} from "../schema";
 
 type WatchFieldType = "schoolName" | "degree" | "startDate" | "endDate" | "currentlyStudyingHere";
 
 export default function EducationForm(): React.ReactElement {
     const router = useRouter();
+
+    const [resume, updateResume] = useResume();
+
     const [openItems, setOpenItems] = useState<{ [key: string]: boolean }>({});
 
     // Use the useForm hook
     // https://react-hook-form.com/api/useform
     const form = useForm({
         resolver: zodResolver(EducationArraySchema),
-        defaultValues: {
-            education: [EducationDefaultValues],
-        },
+        defaultValues: resume?.educations ? { educations: [...resume.educations] } : EducationArrayDefaultValues,
     });
 
     // Use the field array hook
@@ -40,12 +47,12 @@ export default function EducationForm(): React.ReactElement {
         append,
     } = useFieldArray({
         control: form.control,
-        name: "education",
+        name: "educations",
     });
 
     // Watch a field in the education array
     const watchField = (index: number, field: WatchFieldType) => {
-        return form.watch(`education.${index}.${field}`);
+        return form.watch(`educations.${index}.${field}`);
     };
 
     const handleOpenItemsChange = (id: string) => {
@@ -57,7 +64,7 @@ export default function EducationForm(): React.ReactElement {
 
     // Handle form submission event
     const onSubmit: SubmitHandler<EducationArraySchemaField> = async (fieldValue) => {
-        console.log(fieldValue);
+        updateResume<EducationArraySchemaField>(fieldValue);
         router.push("/skills");
     };
 
@@ -110,7 +117,7 @@ export default function EducationForm(): React.ReactElement {
                                         <CollapsibleContent className="mt-5 space-y-2">
                                             <div className="flex flex-col gap-3 md:flex-row">
                                                 <FormField
-                                                    name={`education.${index}.schoolName`}
+                                                    name={`educations.${index}.schoolName`}
                                                     control={form.control}
                                                     render={({ field }) => (
                                                         <FormItem className="w-full md:w-1/2">
@@ -125,7 +132,7 @@ export default function EducationForm(): React.ReactElement {
                                                 />
 
                                                 <FormField
-                                                    name={`education.${index}.schoolLocation`}
+                                                    name={`educations.${index}.schoolLocation`}
                                                     control={form.control}
                                                     render={({ field }) => (
                                                         <FormItem className="w-full md:w-1/2">
@@ -141,7 +148,7 @@ export default function EducationForm(): React.ReactElement {
                                             </div>
                                             <div className="flex flex-col gap-3 md:flex-row">
                                                 <FormField
-                                                    name={`education.${index}.degree`}
+                                                    name={`educations.${index}.degree`}
                                                     control={form.control}
                                                     render={({ field }) => (
                                                         <FormItem className="w-full md:w-1/2">
@@ -156,7 +163,7 @@ export default function EducationForm(): React.ReactElement {
                                                 />
 
                                                 <FormField
-                                                    name={`education.${index}.fieldStudy`}
+                                                    name={`educations.${index}.fieldStudy`}
                                                     control={form.control}
                                                     render={({ field }) => (
                                                         <FormItem className="w-full md:w-1/2">
@@ -173,7 +180,7 @@ export default function EducationForm(): React.ReactElement {
 
                                             <div className="flex flex-col gap-3 md:flex-row">
                                                 <FormField
-                                                    name={`education.${index}.startDate`}
+                                                    name={`educations.${index}.startDate`}
                                                     control={form.control}
                                                     render={({ field }) => (
                                                         <FormItem className="w-full md:w-1/2">
@@ -188,7 +195,7 @@ export default function EducationForm(): React.ReactElement {
                                                 />
 
                                                 <FormField
-                                                    name={`education.${index}.endDate`}
+                                                    name={`educations.${index}.endDate`}
                                                     control={form.control}
                                                     render={({ field }) => (
                                                         <FormItem className="w-full md:w-1/2">
@@ -210,7 +217,7 @@ export default function EducationForm(): React.ReactElement {
 
                                             <div className="flex w-full justify-end">
                                                 <FormField
-                                                    name={`education.${index}.currentlyStudyingHere`}
+                                                    name={`educations.${index}.currentlyStudyingHere`}
                                                     control={form.control}
                                                     render={({ field }) => (
                                                         <FormItem className="flex items-center space-x-2">
@@ -229,7 +236,7 @@ export default function EducationForm(): React.ReactElement {
 
                                             <div className="mb-2 flex flex-col gap-3 md:flex-row">
                                                 <FormField
-                                                    name={`education.${index}.educationSummary`}
+                                                    name={`educations.${index}.educationSummary`}
                                                     control={form.control}
                                                     render={({ field }) => (
                                                         <FormItem className="w-full">
