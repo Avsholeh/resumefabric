@@ -12,6 +12,15 @@ export const WorkExperienceSchema = z.object({
     workSummary: z.string(),
 });
 
+// Create schema for the work experience array
+export const WorkExperienceArraySchema = z.object({
+    workExperiences: z.array(WorkExperienceSchema),
+});
+
+// Define a type alias for the inferred type of the schema
+export type WorkExperienceSchemaField = z.infer<typeof WorkExperienceSchema>;
+export type WorkExperienceArraySchemaField = z.infer<typeof WorkExperienceArraySchema>;
+
 // Define default values for the work experience form
 export const WorkExperienceDefaultValues = {
     positionTitle: "",
@@ -28,12 +37,3 @@ export const WorkExperienceDefaultValues = {
 export const WorkExperienceArrayDefaultValues = {
     workExperiences: [WorkExperienceDefaultValues],
 };
-
-// Create schema for the work experience array
-export const WorkExperienceArraySchema = z.object({
-    workExperiences: z.array(WorkExperienceSchema),
-});
-
-// Define a type alias for the inferred type of the schema
-export type WorkExperienceSchemaField = z.infer<typeof WorkExperienceSchema>;
-export type WorkExperienceArraySchemaField = z.infer<typeof WorkExperienceArraySchema>;

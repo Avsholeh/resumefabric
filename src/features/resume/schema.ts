@@ -15,7 +15,7 @@ export const ResumeSchemaArray = z.array(ResumeSchema);
 export const ResumeDefaultValue = {
     id: "",
     personalDetails: PersonalDetailDefaultValues,
-    workExperiences: WorkExperienceArrayDefaultValues.workExperiences,
+    workExperiences: WorkExperienceArrayDefaultValues,
     educations: EducationArrayDefaultValues,
 };
 
