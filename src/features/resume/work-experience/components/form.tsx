@@ -41,7 +41,7 @@ export default function WorkExperienceForm(): React.ReactElement {
             : WorkExperienceArrayDefaultValues,
     });
 
-    const { fields, append, remove, replace } = useFieldArray({
+    const { fields, append, remove } = useFieldArray({
         control: form.control,
         name: "workExperiences",
     });
