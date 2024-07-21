@@ -95,7 +95,7 @@ export default function EducationForm(): React.ReactElement {
                                         className="w-full"
                                     >
                                         <div className="flex items-center justify-between">
-                                            <h4 className="text-lg font-semibold">
+                                            <h4 className="text-base font-semibold md:text-lg">
                                                 <span>{watchField(index, "schoolName") || "School Name"}, </span>
                                                 <span>{watchField(index, "degree") || "Degree"} | </span>
                                                 <span>{watchField(index, "startDate") || "Start Date"}</span>

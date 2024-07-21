@@ -89,7 +89,7 @@ export default function WorkExperienceForm(): React.ReactElement {
                                         className="w-full"
                                     >
                                         <div className="flex items-center justify-between">
-                                            <h4 className="text-lg font-semibold">
+                                            <h4 className="text-base font-semibold md:text-lg">
                                                 <span>{watchField(index, "positionTitle") || "Position Title"}, </span>
                                                 <span>{watchField(index, "companyName") || "Company Name"} | </span>
                                                 <span>{watchField(index, "startDate") || "Start Date"}</span>
