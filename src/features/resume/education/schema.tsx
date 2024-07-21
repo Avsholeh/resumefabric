@@ -17,6 +17,10 @@ export const EducationArraySchema = z.object({
     educations: z.array(EducationSchema),
 });
 
+// Define a type alias for the inferred type of the schema
+export type EducationSchemaField = z.infer<typeof EducationSchema>;
+export type EducationArraySchemaField = z.infer<typeof EducationArraySchema>;
+
 // Define default values for the education form
 export const EducationDefaultValues = {
     schoolName: "",
@@ -32,7 +36,3 @@ export const EducationDefaultValues = {
 export const EducationArrayDefaultValues = {
     educations: [EducationDefaultValues],
 };
-
-// Define a type alias for the inferred type of the schema
-export type EducationSchemaField = z.infer<typeof EducationSchema>;
-export type EducationArraySchemaField = z.infer<typeof EducationArraySchema>;

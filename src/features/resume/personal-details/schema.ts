@@ -18,6 +18,10 @@ export const PersonalDetailSchema = z.object({
     socialLinks: z.array(SocialLinkSchema).optional(),
 });
 
+// Define a type alias for the inferred type of the schema
+export type PersonalDetailSchemaField = z.infer<typeof PersonalDetailSchema>;
+export type SocialLinkSchemaField = z.infer<typeof SocialLinkSchema>;
+
 // Define default values for the personal details form
 export const PersonalDetailDefaultValues: PersonalDetailSchemaField = {
     firstName: "",
@@ -29,7 +33,3 @@ export const PersonalDetailDefaultValues: PersonalDetailSchemaField = {
     email: "",
     socialLinks: [],
 };
-
-// Define a type alias for the inferred type of the schema
-export type PersonalDetailSchemaField = z.infer<typeof PersonalDetailSchema>;
-export type SocialLinkSchemaField = z.infer<typeof SocialLinkSchema>;
