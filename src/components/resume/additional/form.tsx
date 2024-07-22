@@ -3,10 +3,10 @@
 import FormButtonGroup from "@/components/shared/form-button-group";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
+import { AdditionalDefaultValue, AdditionalField, AdditionalSchema } from "@/schema/additional";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import { AdditionalDefaultValue, AdditionalField, AdditionalSchema } from "../schema";
 import SoftwareForm from "./software-form";
 
 export default function AdditionalForm(): React.ReactElement {

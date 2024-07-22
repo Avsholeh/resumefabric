@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { EducationManyDefaultValues, EducationSchema } from "./education/schema";
-import { PersonalDetailDefaultValues, PersonalDetailSchema } from "./personal-details/schema";
-import { SkillDefaultValues, SkillSchema } from "./skills/schema";
-import { WorkExperienceManyDefaultValues, WorkExperienceSchema } from "./work-experience/schema";
+import { EducationManyDefaultValues, EducationSchema } from "./education";
+import { PersonalDetailDefaultValues, PersonalDetailSchema } from "./personal-details";
+import { SkillDefaultValues, SkillSchema } from "./skills";
+import { WorkExperienceManyDefaultValues, WorkExperienceSchema } from "./work-experience";
 
 // Create schema for the resume form
 export const ResumeSchema = z.object({

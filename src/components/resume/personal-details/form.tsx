@@ -5,10 +5,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import useResume from "@/hooks/use-resume";
+import { PersonalDetailDefaultValues, PersonalDetailField, PersonalDetailSchema } from "@/schema/personal-details";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { PersonalDetailDefaultValues, PersonalDetailField, PersonalDetailSchema } from "../schema";
 import SocialLinks from "./social-link";
 
 export default function PersonalDetailsForm(): React.ReactElement {

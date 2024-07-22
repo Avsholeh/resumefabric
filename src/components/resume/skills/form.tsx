@@ -6,10 +6,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import useResume from "@/hooks/use-resume";
+import { SkillManyDefaultValues, SkillManyField, SkillManySchema } from "@/schema/skills";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import { SkillManyDefaultValues, SkillManyField, SkillManySchema } from "../schema";
 import SkillCard from "./skill-card";
 
 export default function SkillsForm(): React.ReactElement {

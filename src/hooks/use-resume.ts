@@ -1,4 +1,4 @@
-import { ResumeDefaultValue, type ResumeArrayField } from "@/features/resume/schema";
+import { ResumeDefaultValue, type ResumeArrayField } from "@/schema/resume";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { v4 as uuidv4 } from "uuid";
 

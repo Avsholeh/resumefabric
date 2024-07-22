@@ -7,11 +7,11 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { SummaryDefaultValues, SummaryField, SummarySchema } from "@/schema/summary";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { SummaryDefaultValues, SummaryField, SummarySchema } from "../schema";
 
 export default function SummaryForm(): React.ReactElement {
     const router = useRouter();

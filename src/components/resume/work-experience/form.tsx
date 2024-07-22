@@ -11,51 +11,42 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import useResume from "@/hooks/use-resume";
+import {
+    type WorkExperienceManyField,
+    WorkExperienceDefaultValues,
+    WorkExperienceManyDefaultValues,
+    WorkExperienceManySchema,
+} from "@/schema/work-experience";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronsUpDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import {
-    EducationDefaultValues,
-    EducationManyDefaultValues,
-    EducationManySchema,
-    type EducationManyField,
-} from "../schema";
 
-type WatchFieldType = "schoolName" | "degree" | "startDate" | "endDate" | "currentlyStudyingHere";
+type watchFieldType = "positionTitle" | "companyName" | "startDate" | "endDate" | "currentlyWorkingHere";
 
-export default function EducationForm(): React.ReactElement {
+export default function WorkExperienceForm(): React.ReactElement {
     const router = useRouter();
+
+    // This hook is used to get and set the resume data
     const [resume, updateResume] = useResume();
+
+    // This state is used to keep track of the open state of the collapsible items
     const [openItems, setOpenItems] = useState<{ [key: string]: boolean }>({});
 
-    console.log(resume?.educations);
-    console.log(EducationManyDefaultValues);
-
-    // Use the useForm hook
-    // https://react-hook-form.com/api/useform
-    const form = useForm({
-        resolver: zodResolver(EducationManySchema),
-        defaultValues: resume?.educations ? { educations: resume.educations } : EducationManyDefaultValues,
+    const form = useForm<WorkExperienceManyField>({
+        resolver: zodResolver(WorkExperienceManySchema),
+        defaultValues: resume?.workExperiences
+            ? { workExperiences: resume.workExperiences }
+            : WorkExperienceManyDefaultValues,
     });
 
-    // Use the field array hook
-    // https://react-hook-form.com/api/usefieldarray
-    const {
-        fields: educations,
-        remove,
-        append,
-    } = useFieldArray({
+    const { fields, append, remove } = useFieldArray({
         control: form.control,
-        name: "educations",
+        name: "workExperiences",
     });
 
-    // Watch a field in the education array
-    const watchField = (index: number, field: WatchFieldType) => {
-        return form.watch(`educations.${index}.${field}`);
-    };
-
+    // Function to handle the open state of the collapsible items
     const handleOpenItemsChange = (id: string) => {
         setOpenItems((prev) => ({
             ...prev,
@@ -63,31 +54,33 @@ export default function EducationForm(): React.ReactElement {
         }));
     };
 
-    // Handle form submission event
-    const onSubmit: SubmitHandler<EducationManyField> = async (fieldValue) => {
-        updateResume<EducationManyField>(fieldValue);
-        router.push("/skills");
+    // Utility function to watch the field values
+    const watchField = (index: number, field: watchFieldType) => {
+        return form.watch(`workExperiences.${index}.${field}`);
+    };
+
+    const onSubmit: SubmitHandler<WorkExperienceManyField> = async (fieldValue) => {
+        updateResume<WorkExperienceManyField>(fieldValue);
+        router.push("/education");
     };
 
     return (
         <Form {...form}>
-            <form id="education-form" onSubmit={form.handleSubmit(onSubmit)}>
+            <form id="work-experience" onSubmit={form.handleSubmit(onSubmit)}>
                 <FormButtonGroup
-                    nextURL="/skills"
-                    prevURL="/work-experience"
+                    nextURL="/education"
+                    prevURL="/personal-details"
                     showSkip
                     isLoading={form.formState.isSubmitting}
                 />
 
                 <Card className="mb-20">
                     <CardHeader>
-                        <CardTitle>Education</CardTitle>
-                        <CardDescription>
-                            Provide information on your relevant education and current studies.
-                        </CardDescription>
+                        <CardTitle>Work Experience</CardTitle>
+                        <CardDescription>Provide details about your most recent job.</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        {educations.map((field, index) => (
+                        {fields.map((field, index) => (
                             <Card key={field.id} className="mb-3">
                                 <CardContent className="pt-6">
                                     <Collapsible
@@ -97,12 +90,12 @@ export default function EducationForm(): React.ReactElement {
                                     >
                                         <div className="flex items-center justify-between">
                                             <h4 className="text-base font-semibold md:text-lg">
-                                                <span>{watchField(index, "schoolName") || "School Name"}, </span>
-                                                <span>{watchField(index, "degree") || "Degree"} | </span>
+                                                <span>{watchField(index, "positionTitle") || "Position Title"}, </span>
+                                                <span>{watchField(index, "companyName") || "Company Name"} | </span>
                                                 <span>{watchField(index, "startDate") || "Start Date"}</span>
                                                 <span> - </span>
                                                 <span>
-                                                    {watchField(index, "currentlyStudyingHere")
+                                                    {watchField(index, "currentlyWorkingHere")
                                                         ? "Present"
                                                         : watchField(index, "endDate") || "End Date"}
                                                 </span>
@@ -118,11 +111,11 @@ export default function EducationForm(): React.ReactElement {
                                         <CollapsibleContent className="mt-5 space-y-2">
                                             <div className="flex flex-col gap-3 md:flex-row">
                                                 <FormField
-                                                    name={`educations.${index}.schoolName`}
+                                                    name={`workExperiences.${index}.positionTitle`}
                                                     control={form.control}
                                                     render={({ field }) => (
                                                         <FormItem className="w-full md:w-1/2">
-                                                            <FormLabel>School Name</FormLabel>
+                                                            <FormLabel>Position Title</FormLabel>
                                                             <FormControl>
                                                                 <Input {...field} />
                                                             </FormControl>
@@ -133,42 +126,11 @@ export default function EducationForm(): React.ReactElement {
                                                 />
 
                                                 <FormField
-                                                    name={`educations.${index}.schoolLocation`}
+                                                    name={`workExperiences.${index}.companyName`}
                                                     control={form.control}
                                                     render={({ field }) => (
                                                         <FormItem className="w-full md:w-1/2">
-                                                            <FormLabel>School Location</FormLabel>
-                                                            <FormControl>
-                                                                <Input {...field} />
-                                                            </FormControl>
-                                                            <FormDescription />
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </div>
-                                            <div className="flex flex-col gap-3 md:flex-row">
-                                                <FormField
-                                                    name={`educations.${index}.degree`}
-                                                    control={form.control}
-                                                    render={({ field }) => (
-                                                        <FormItem className="w-full md:w-1/2">
-                                                            <FormLabel>Degree</FormLabel>
-                                                            <FormControl>
-                                                                <Input {...field} />
-                                                            </FormControl>
-                                                            <FormDescription />
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-
-                                                <FormField
-                                                    name={`educations.${index}.fieldStudy`}
-                                                    control={form.control}
-                                                    render={({ field }) => (
-                                                        <FormItem className="w-full md:w-1/2">
-                                                            <FormLabel>Field of Study</FormLabel>
+                                                            <FormLabel>Company Name</FormLabel>
                                                             <FormControl>
                                                                 <Input {...field} />
                                                             </FormControl>
@@ -181,10 +143,42 @@ export default function EducationForm(): React.ReactElement {
 
                                             <div className="flex flex-col gap-3 md:flex-row">
                                                 <FormField
-                                                    name={`educations.${index}.startDate`}
+                                                    name={`workExperiences.${index}.city`}
                                                     control={form.control}
                                                     render={({ field }) => (
                                                         <FormItem className="w-full md:w-1/2">
+                                                            <FormLabel>City</FormLabel>
+                                                            <FormControl>
+                                                                <Input {...field} />
+                                                            </FormControl>
+                                                            <FormDescription />
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+
+                                                <FormField
+                                                    name={`workExperiences.${index}.state`}
+                                                    control={form.control}
+                                                    render={({ field }) => (
+                                                        <FormItem className="w-full md:w-1/2">
+                                                            <FormLabel>State</FormLabel>
+                                                            <FormControl>
+                                                                <Input {...field} />
+                                                            </FormControl>
+                                                            <FormDescription />
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                            </div>
+
+                                            <div className="flex flex-col gap-3 md:flex-row">
+                                                <FormField
+                                                    name={`workExperiences.${index}.startDate`}
+                                                    control={form.control}
+                                                    render={({ field }) => (
+                                                        <FormItem className="flex w-full flex-col md:w-1/2">
                                                             <FormLabel>Start Date</FormLabel>
                                                             <FormControl>
                                                                 <DatePicker field={field} />
@@ -196,16 +190,16 @@ export default function EducationForm(): React.ReactElement {
                                                 />
 
                                                 <FormField
-                                                    name={`educations.${index}.endDate`}
+                                                    name={`workExperiences.${index}.endDate`}
                                                     control={form.control}
                                                     render={({ field }) => (
-                                                        <FormItem className="w-full md:w-1/2">
+                                                        <FormItem className="flex w-full flex-col md:w-1/2">
                                                             <FormLabel>End Date</FormLabel>
                                                             <FormControl>
                                                                 <DatePicker
                                                                     field={field}
                                                                     disabled={
-                                                                        !!watchField(index, "currentlyStudyingHere")
+                                                                        !!watchField(index, "currentlyWorkingHere")
                                                                     }
                                                                 />
                                                             </FormControl>
@@ -218,7 +212,7 @@ export default function EducationForm(): React.ReactElement {
 
                                             <div className="flex w-full justify-end">
                                                 <FormField
-                                                    name={`educations.${index}.currentlyStudyingHere`}
+                                                    name={`workExperiences.${index}.currentlyWorkingHere`}
                                                     control={form.control}
                                                     render={({ field }) => (
                                                         <FormItem className="flex items-center space-x-2">
@@ -229,7 +223,7 @@ export default function EducationForm(): React.ReactElement {
                                                                     onCheckedChange={field.onChange}
                                                                 />
                                                             </FormControl>
-                                                            <FormLabel>Currently Studying Here</FormLabel>
+                                                            <FormLabel>Currently Working Here</FormLabel>
                                                         </FormItem>
                                                     )}
                                                 />
@@ -237,11 +231,11 @@ export default function EducationForm(): React.ReactElement {
 
                                             <div className="mb-2 flex flex-col gap-3 md:flex-row">
                                                 <FormField
-                                                    name={`educations.${index}.educationSummary`}
+                                                    name={`workExperiences.${index}.workSummary`}
                                                     control={form.control}
                                                     render={({ field }) => (
                                                         <FormItem className="w-full">
-                                                            <FormLabel>Education Summary</FormLabel>
+                                                            <FormLabel>Work Summary</FormLabel>
                                                             <FormControl>
                                                                 <Textarea {...field} />
                                                             </FormControl>
@@ -251,7 +245,8 @@ export default function EducationForm(): React.ReactElement {
                                                     )}
                                                 />
                                             </div>
-                                            {educations.length > 1 && (
+
+                                            {fields.length > 1 && (
                                                 <div className="flex w-full justify-end">
                                                     <BtnDelete onClick={() => remove(index)} />
                                                 </div>
@@ -261,9 +256,10 @@ export default function EducationForm(): React.ReactElement {
                                 </CardContent>
                             </Card>
                         ))}
+
                         <div className="flex w-full justify-end md:mb-0">
-                            <Button type="button" variant={"ghost"} onClick={() => append(EducationDefaultValues)}>
-                                + Add More Education
+                            <Button type="button" variant={"ghost"} onClick={() => append(WorkExperienceDefaultValues)}>
+                                + Add More Work Experience
                             </Button>
                         </div>
                     </CardContent>

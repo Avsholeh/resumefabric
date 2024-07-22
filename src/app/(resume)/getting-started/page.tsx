@@ -2,11 +2,11 @@ import ColorPicker from "@/components/shared/color-picker";
 import { Button } from "@/components/ui/button";
 import dynamic from "next/dynamic";
 
-const CreateResumeDynamic = dynamic(() => import("@/features/resume/getting-started/create-resume"), {
+const CreateResumeDynamic = dynamic(() => import("@/components/resume/getting-started/create-resume"), {
     ssr: false, // Disable server side rendering for this component
 });
 
-export default function GettingStarted() {
+export default function GettingStartedPage() {
     return (
         <>
             <div className="my-3 text-center">

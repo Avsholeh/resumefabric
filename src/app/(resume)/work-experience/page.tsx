@@ -1,8 +1,8 @@
+import ClassicTemplate from "@/components/resume/templates/classic";
 import ResumeContainer from "@/components/shared/resume-container";
-import ClassicTemplate from "@/features/resume/templates/classic";
 import dynamic from "next/dynamic";
 
-const WorkExperienceFormDynamic = dynamic(() => import("@/features/resume/work-experience/components/form"), {
+const WorkExperienceFormDynamic = dynamic(() => import("@/components/resume/work-experience/form"), {
     ssr: false, // Disable server side rendering for this component
 });
 

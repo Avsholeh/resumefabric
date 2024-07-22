@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { SkillManyField } from "@/schema/skills";
 import {
     Controller,
     type Control,
@@ -11,7 +12,6 @@ import {
     type UseFieldArrayRemove,
     type UseFormWatch,
 } from "react-hook-form";
-import { SkillManyField } from "../schema";
 
 type SkillCardProps = {
     skill: FieldArrayWithId<SkillManyField>;
