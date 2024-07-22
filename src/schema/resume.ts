@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { AdditionalSchema } from "./additional";
 import { EducationManyDefaultValues, EducationSchema } from "./education";
 import { PersonalDetailDefaultValues, PersonalDetailSchema } from "./personal-details";
 import { SkillDefaultValues, SkillSchema } from "./skills";
@@ -11,6 +12,7 @@ export const ResumeSchema = z.object({
     workExperiences: z.array(WorkExperienceSchema).optional(),
     educations: z.array(EducationSchema).optional(),
     skills: SkillSchema.optional(),
+    additional: AdditionalSchema.optional(),
 });
 
 // Create schema for the resume array

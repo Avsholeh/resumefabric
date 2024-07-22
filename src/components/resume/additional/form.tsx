@@ -3,6 +3,7 @@
 import FormButtonGroup from "@/components/shared/form-button-group";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
+import useResume from "@/hooks/use-resume";
 import { AdditionalDefaultValue, AdditionalField, AdditionalSchema } from "@/schema/additional";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -11,9 +12,14 @@ import SoftwareForm from "./software-form";
 
 export default function AdditionalForm(): React.ReactElement {
     const router = useRouter();
+
+    // This hook is used to get the resume data from the context
+    const [resume, updateResume] = useResume();
+
+    // This hook is used to create a form instance
     const form = useForm<AdditionalField>({
         resolver: zodResolver(AdditionalSchema),
-        defaultValues: AdditionalDefaultValue,
+        defaultValues: resume?.additional ? resume.additional : AdditionalDefaultValue,
     });
 
     const {
@@ -25,6 +31,8 @@ export default function AdditionalForm(): React.ReactElement {
         name: "software.items",
     });
 
+    // This function is used to handle the click event on the card section
+    // It will append a new form if the section is clicked
     const handleClickSection = (section: string) => {
         if (section === "software" && softwareFields.length === 0) {
             softwareAppend({ name: "", level: 3 });
@@ -32,7 +40,7 @@ export default function AdditionalForm(): React.ReactElement {
     };
 
     const onSubmit: SubmitHandler<AdditionalField> = (fieldValue) => {
-        console.log("onSubmit", fieldValue);
+        updateResume<{ additional: AdditionalField }>({ additional: fieldValue });
         router.push("/summary");
     };
 
