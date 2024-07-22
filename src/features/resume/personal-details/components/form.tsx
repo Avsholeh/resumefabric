@@ -8,7 +8,7 @@ import useResume from "@/hooks/use-resume";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { PersonalDetailDefaultValues, PersonalDetailSchema, PersonalDetailSchemaField } from "../schema";
+import { PersonalDetailDefaultValues, PersonalDetailField, PersonalDetailSchema } from "../schema";
 import SocialLinks from "./social-link";
 
 export default function PersonalDetailsForm(): React.ReactElement {
@@ -19,15 +19,15 @@ export default function PersonalDetailsForm(): React.ReactElement {
 
     // Use the useForm hook
     // https://react-hook-form.com/api/useform
-    const form = useForm<PersonalDetailSchemaField>({
+    const form = useForm<PersonalDetailField>({
         resolver: zodResolver(PersonalDetailSchema),
         defaultValues: resume?.personalDetails ? resume.personalDetails : PersonalDetailDefaultValues,
     });
 
     // Handle form submission
-    const onSubmit: SubmitHandler<PersonalDetailSchemaField> = async (fieldValue) => {
+    const onSubmit: SubmitHandler<PersonalDetailField> = async (fieldValue) => {
         // Update the resume in local storage with the latest personal details
-        updateResume<{ personalDetails: PersonalDetailSchemaField }>({ personalDetails: fieldValue });
+        updateResume<{ personalDetails: PersonalDetailField }>({ personalDetails: fieldValue });
 
         // Redirect to the next step
         router.push("/work-experience");

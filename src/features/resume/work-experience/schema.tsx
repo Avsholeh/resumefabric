@@ -13,13 +13,13 @@ export const WorkExperienceSchema = z.object({
 });
 
 // Create schema for the work experience array
-export const WorkExperienceArraySchema = z.object({
-    workExperiences: z.array(WorkExperienceSchema),
+export const WorkExperienceManySchema = z.object({
+    workExperiences: z.array(WorkExperienceSchema).optional(),
 });
 
 // Define a type alias for the inferred type of the schema
-export type WorkExperienceSchemaField = z.infer<typeof WorkExperienceSchema>;
-export type WorkExperienceArraySchemaField = z.infer<typeof WorkExperienceArraySchema>;
+export type WorkExperienceField = z.infer<typeof WorkExperienceSchema>;
+export type WorkExperienceManyField = z.infer<typeof WorkExperienceManySchema>;
 
 // Define default values for the work experience form
 export const WorkExperienceDefaultValues = {
@@ -34,6 +34,6 @@ export const WorkExperienceDefaultValues = {
 };
 
 // Define default values for the work experience form
-export const WorkExperienceArrayDefaultValues = {
+export const WorkExperienceManyDefaultValues = {
     workExperiences: [WorkExperienceDefaultValues],
 };

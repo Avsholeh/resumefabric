@@ -6,14 +6,14 @@ import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import { AdditionalSchema, AdditionalSchemaDefaultValue, AdditionalSchemaField } from "../schema";
+import { AdditionalDefaultValue, AdditionalField, AdditionalSchema } from "../schema";
 import SoftwareForm from "./software-form";
 
 export default function AdditionalForm(): React.ReactElement {
     const router = useRouter();
-    const form = useForm<AdditionalSchemaField>({
+    const form = useForm<AdditionalField>({
         resolver: zodResolver(AdditionalSchema),
-        defaultValues: AdditionalSchemaDefaultValue,
+        defaultValues: AdditionalDefaultValue,
     });
 
     const {
@@ -31,7 +31,7 @@ export default function AdditionalForm(): React.ReactElement {
         }
     };
 
-    const onSubmit: SubmitHandler<AdditionalSchemaField> = (fieldValue) => {
+    const onSubmit: SubmitHandler<AdditionalField> = (fieldValue) => {
         console.log("onSubmit", fieldValue);
         router.push("/summary");
     };

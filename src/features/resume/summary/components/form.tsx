@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { SummaryDefaultValues, SummaryField, SummarySchema } from "../summary";
+import { SummaryDefaultValues, SummaryField, SummarySchema } from "../schema";
 
 export default function SummaryForm(): React.ReactElement {
     const router = useRouter();

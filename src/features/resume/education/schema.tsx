@@ -13,13 +13,13 @@ export const EducationSchema = z.object({
 });
 
 // Create schema for the education array
-export const EducationArraySchema = z.object({
-    educations: z.array(EducationSchema),
+export const EducationManySchema = z.object({
+    educations: z.array(EducationSchema).optional(),
 });
 
 // Define a type alias for the inferred type of the schema
-export type EducationSchemaField = z.infer<typeof EducationSchema>;
-export type EducationArraySchemaField = z.infer<typeof EducationArraySchema>;
+export type EducationField = z.infer<typeof EducationSchema>;
+export type EducationManyField = z.infer<typeof EducationManySchema>;
 
 // Define default values for the education form
 export const EducationDefaultValues = {
@@ -33,6 +33,6 @@ export const EducationDefaultValues = {
     educationSummary: "",
 };
 
-export const EducationArrayDefaultValues = {
+export const EducationManyDefaultValues = {
     educations: [EducationDefaultValues],
 };

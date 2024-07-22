@@ -11,14 +11,14 @@ import {
     type UseFieldArrayRemove,
     type UseFormWatch,
 } from "react-hook-form";
-import { type SkillArrayField } from "../schema";
+import { SkillManyField } from "../schema";
 
 type SkillCardProps = {
-    skill: FieldArrayWithId<SkillArrayField>;
+    skill: FieldArrayWithId<SkillManyField>;
     index: number;
-    control: Control<SkillArrayField>;
+    control: Control<SkillManyField>;
     isDelete?: boolean;
-    watch: UseFormWatch<SkillArrayField>;
+    watch: UseFormWatch<SkillManyField>;
     remove: UseFieldArrayRemove;
 };
 
@@ -36,7 +36,7 @@ export default function SkillCard({
                 <div className="flex flex-col items-center justify-between gap-5 md:flex-row">
                     <div className="flex w-full items-center gap-5">
                         <FormField
-                            name={`skills.${index}.name`}
+                            name={`skills.items.${index}.name`}
                             control={control}
                             defaultValue={skill.name}
                             render={({ field }) => (
@@ -51,12 +51,12 @@ export default function SkillCard({
                     <div
                         className={cn(
                             "flex w-full items-center gap-5 md:w-auto",
-                            !!watch("showExperienceLevel") ? "justify-between" : "justify-end"
+                            !!watch("skills.showExperienceLevel") ? "justify-between" : "justify-end"
                         )}
                     >
-                        {!!watch("showExperienceLevel") && (
+                        {!!watch("skills.showExperienceLevel") && (
                             <Controller
-                                name={`skills.${index}.experienceLevel`}
+                                name={`skills.items.${index}.experienceLevel`}
                                 control={control}
                                 defaultValue={skill.experienceLevel}
                                 render={({ field }) => (

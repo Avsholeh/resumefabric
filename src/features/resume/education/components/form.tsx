@@ -17,26 +17,27 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import {
-    EducationArrayDefaultValues,
-    EducationArraySchema,
-    type EducationArraySchemaField,
     EducationDefaultValues,
+    EducationManyDefaultValues,
+    EducationManySchema,
+    type EducationManyField,
 } from "../schema";
 
 type WatchFieldType = "schoolName" | "degree" | "startDate" | "endDate" | "currentlyStudyingHere";
 
 export default function EducationForm(): React.ReactElement {
     const router = useRouter();
-
     const [resume, updateResume] = useResume();
-
     const [openItems, setOpenItems] = useState<{ [key: string]: boolean }>({});
+
+    console.log(resume?.educations);
+    console.log(EducationManyDefaultValues);
 
     // Use the useForm hook
     // https://react-hook-form.com/api/useform
     const form = useForm({
-        resolver: zodResolver(EducationArraySchema),
-        defaultValues: resume?.educations ? { educations: [...resume.educations] } : EducationArrayDefaultValues,
+        resolver: zodResolver(EducationManySchema),
+        defaultValues: resume?.educations ? { educations: resume.educations } : EducationManyDefaultValues,
     });
 
     // Use the field array hook
@@ -63,8 +64,8 @@ export default function EducationForm(): React.ReactElement {
     };
 
     // Handle form submission event
-    const onSubmit: SubmitHandler<EducationArraySchemaField> = async (fieldValue) => {
-        updateResume<EducationArraySchemaField>(fieldValue);
+    const onSubmit: SubmitHandler<EducationManyField> = async (fieldValue) => {
+        updateResume<EducationManyField>(fieldValue);
         router.push("/skills");
     };
 

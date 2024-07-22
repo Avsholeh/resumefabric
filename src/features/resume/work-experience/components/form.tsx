@@ -17,10 +17,10 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import {
-    WorkExperienceArrayDefaultValues,
-    WorkExperienceArraySchema,
-    type WorkExperienceArraySchemaField,
+    type WorkExperienceManyField,
     WorkExperienceDefaultValues,
+    WorkExperienceManyDefaultValues,
+    WorkExperienceManySchema,
 } from "../schema";
 
 type watchFieldType = "positionTitle" | "companyName" | "startDate" | "endDate" | "currentlyWorkingHere";
@@ -34,11 +34,11 @@ export default function WorkExperienceForm(): React.ReactElement {
     // This state is used to keep track of the open state of the collapsible items
     const [openItems, setOpenItems] = useState<{ [key: string]: boolean }>({});
 
-    const form = useForm<WorkExperienceArraySchemaField>({
-        resolver: zodResolver(WorkExperienceArraySchema),
+    const form = useForm<WorkExperienceManyField>({
+        resolver: zodResolver(WorkExperienceManySchema),
         defaultValues: resume?.workExperiences
-            ? { workExperiences: [...resume.workExperiences] }
-            : WorkExperienceArrayDefaultValues,
+            ? { workExperiences: resume.workExperiences }
+            : WorkExperienceManyDefaultValues,
     });
 
     const { fields, append, remove } = useFieldArray({
@@ -59,8 +59,8 @@ export default function WorkExperienceForm(): React.ReactElement {
         return form.watch(`workExperiences.${index}.${field}`);
     };
 
-    const onSubmit: SubmitHandler<WorkExperienceArraySchemaField> = async (fieldValue) => {
-        updateResume<WorkExperienceArraySchemaField>(fieldValue);
+    const onSubmit: SubmitHandler<WorkExperienceManyField> = async (fieldValue) => {
+        updateResume<WorkExperienceManyField>(fieldValue);
         router.push("/education");
     };
 

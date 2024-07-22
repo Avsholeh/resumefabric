@@ -5,23 +5,23 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import useResume from "@/hooks/use-resume";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import { SkillArrayField, SkillArraySchema } from "../schema";
+import { SkillManyDefaultValues, SkillManyField, SkillManySchema } from "../schema";
 import SkillCard from "./skill-card";
 
 export default function SkillsForm(): React.ReactElement {
     const router = useRouter();
 
+    const [resume, updateResume] = useResume();
+
     // Create a form with the useForm hook
     // https://react-hook-form.com/api/useform
-    const form = useForm<SkillArrayField>({
-        resolver: zodResolver(SkillArraySchema),
-        defaultValues: {
-            showExperienceLevel: true,
-            skills: [{ name: "", experienceLevel: 3 }],
-        },
+    const form = useForm<SkillManyField>({
+        resolver: zodResolver(SkillManySchema),
+        defaultValues: resume?.skills ? { skills: resume.skills } : SkillManyDefaultValues,
     });
 
     // Use the useFieldArray hook to manage the skills array
@@ -32,12 +32,12 @@ export default function SkillsForm(): React.ReactElement {
         remove,
     } = useFieldArray({
         control: form.control,
-        name: "skills",
+        name: "skills.items",
     });
 
     // Define the submit handler
-    const onSubmit: SubmitHandler<SkillArrayField> = async (fieldValue) => {
-        console.log(fieldValue);
+    const onSubmit: SubmitHandler<SkillManyField> = async (fieldValue) => {
+        updateResume<SkillManyField>(fieldValue);
         router.push("/additional");
     };
 
@@ -59,7 +59,7 @@ export default function SkillsForm(): React.ReactElement {
                     <CardContent>
                         <div className="mb-5 flex">
                             <FormField
-                                name="showExperienceLevel"
+                                name="skills.showExperienceLevel"
                                 control={form.control}
                                 render={({ field }) => (
                                     <FormItem className="flex items-center space-x-2">
