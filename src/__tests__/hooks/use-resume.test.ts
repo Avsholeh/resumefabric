@@ -1,7 +1,8 @@
 import useResume from "@/hooks/use-resume";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { beforeEach } from "node:test";
-import { describe, expect, test, vi } from "vitest";
+import { v4 as uuidv4 } from "uuid";
+import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@uidotdev/usehooks", () => ({
     useLocalStorage: vi.fn(),
@@ -9,6 +10,10 @@ vi.mock("@uidotdev/usehooks", () => ({
 
 vi.mock("uuid", () => ({
     v4: vi.fn(),
+}));
+
+vi.mock("@/schema/resume", () => ({
+    ResumeDefaultValue: { name: "" },
 }));
 
 const mockResume = {
@@ -30,7 +35,7 @@ describe("useResumeTest", () => {
         vi.clearAllMocks();
     });
 
-    test("initializes correctly with no active resume", () => {
+    it("initializes correctly with no active resume", () => {
         /* arrange */
         vi.mocked(useLocalStorage).mockImplementation((key, defaultValue) => {
             return key === "active-resume" ? [null, vi.fn()] : [[], vi.fn()];
@@ -43,7 +48,7 @@ describe("useResumeTest", () => {
         expect(selectedResume).toBeNull();
     });
 
-    test("selects the correct active resume", () => {
+    it("selects the correct active resume", () => {
         /* arrange */
         const mockResumes = [
             { ...mockResume, id: "1" },
@@ -69,12 +74,12 @@ describe("useResumeTest", () => {
         expect(selectedResume).toEqual(mockResumes[1]);
     });
 
-    test("updates an existing resume", () => {
+    it("updates an existing resume", () => {
         /* arrange */
         const mockUpdateResume = { ...mockResume, id: "1" };
         const mockResumes = [mockUpdateResume];
 
-        const setResumes = vi.fn()
+        const setResumes = vi.fn();
         vi.mocked(useLocalStorage).mockImplementation((key) => {
             switch (key) {
                 case "active-resume":
@@ -97,16 +102,28 @@ describe("useResumeTest", () => {
         expect(setResumes).toHaveBeenCalledTimes(1);
     });
 
-    // test("adds a new resume when no active resume is set", () => {
-    //     const setResumes = vi.fn();
-    //     const setActiveResume = vi.fn();
-    //     vi.mocked(uuidv4).mockReturnValue("new-uuid");
-    //     vi.mocked(useLocalStorage).mockImplementation((key) => {
-    //         return key === "resume" ? [[], setResumes] : [null, setActiveResume];
-    //     });
-    //     const [, updateResume] = useResume();
-    //     updateResume({ name: "New Resume" });
-    //     expect(setResumes).toHaveBeenCalledWith([{ id: "new-uuid", name: "New Resume" }]);
-    //     expect(setActiveResume).toHaveBeenCalledWith("new-uuid");
-    // });
+    it("adds a new resume when no active resume is set", () => {
+        /* arrange */
+        const setResumes = vi.fn();
+        const setActiveResume = vi.fn();
+        vi.mocked(uuidv4).mockReturnValue("new-uuid");
+        vi.mocked(useLocalStorage).mockImplementation((key) => {
+            switch (key) {
+                case "resume":
+                    return [[], setResumes];
+                case "active-resume":
+                    return [null, setActiveResume];
+                default:
+                    return [null, vi.fn()];
+            }
+        });
+
+        /* action */
+        const [, updateResume] = useResume();
+        updateResume({ name: "New Resume" });
+
+        /* asserts */
+        expect(setResumes).toHaveBeenCalledWith([{ id: "new-uuid", name: "New Resume" }]);
+        expect(setActiveResume).toHaveBeenCalledWith("new-uuid");
+    });
 });

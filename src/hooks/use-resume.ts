@@ -30,7 +30,7 @@ export default function useResume() {
             } else {
                 // If the active resume is not set, create a new resume
                 const uuid = uuidv4();
-                newResume.push({ ...ResumeDefaultValue, id: uuid });
+                newResume.push({ ...ResumeDefaultValue, ...fieldValue, id: uuid });
                 setActiveResume(uuid);
             }
         }
