@@ -1,31 +1,31 @@
 import PersonalDetailsForm from "@/components/resume/personal-details/form";
+import useResume from "@/hooks/use-resume";
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import * as nextNavigation from "next/navigation";
 import { afterEach } from "node:test";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("next/navigation", () => ({
+vi.mock("next/navigation", (importOriginal) => ({
     useRouter: () => ({
+        ...importOriginal,
         push: vi.fn(),
-        route: "/",
-        query: {},
-        asPath: "/",
     }),
 }));
 
 vi.mock("@/hooks/use-resume", () => ({
     __esModule: true,
-    default: vi.fn(() => ([null, vi.fn()])),
+    default: vi.fn(() => [null, vi.fn()]),
 }));
 
 describe("PersonalDetailsForm", () => {
     beforeEach(() => {
-        cleanup(); // Clean up the document body after each test
+        cleanup(); // Clean up the document body before each test
         userEvent.setup(); // Setup user events
     });
 
     afterEach(() => {
-        vi.clearAllMocks(); // Clear all mocks before each test
+        vi.clearAllMocks(); // Clear all mocks after each test
     });
 
     it("renders correctly", () => {
@@ -39,45 +39,66 @@ describe("PersonalDetailsForm", () => {
         expect(screen.getByLabelText("Email Address")).toBeDefined();
     });
 
-    // it("submits the form with correct values", async () => {
-    //     /* arrange */
-    //     const mockUpdateResume = vi.fn();
-    //     vi.mocked(useResume).mockReturnValue([null, mockUpdateResume]);
+    it("submits the form with correct values", async () => {
+        /* arrange */
+        const mockUpdateResume = vi.fn();
+        vi.mocked(useResume).mockReturnValue([null, mockUpdateResume]);
 
-    //     render(<PersonalDetailsForm />);
+        render(<PersonalDetailsForm />);
 
+        const firstNameInput = screen.getByLabelText("First Name");
+        const lastNameInput = screen.getByLabelText("Last Name");
+        const emailInput = screen.getByLabelText("Email Address");
+        const submitButton = screen.getByRole("button", { name: /next/i });
 
-    //     const firstNameInput = screen.getByLabelText("First Name");
-    //     const lastNameInput = screen.getByLabelText("Last Name");
-    //     const submitButton = screen.getByRole("button", { name: /next/i });
+        /* action */
+        // Fill the form
+        await userEvent.click(firstNameInput);
+        await userEvent.keyboard("Muhammad");
+        await userEvent.click(lastNameInput);
+        await userEvent.keyboard("Sholeh");
+        await userEvent.click(emailInput);
+        await userEvent.keyboard("muhammadsholeh@gmail.com");
 
-    //     /* action */
-    //     // Fill the form
-    //     await userEvent.click(firstNameInput);
-    //     await userEvent.keyboard("Muhammad");
-    //     await userEvent.click(lastNameInput);
-    //     await userEvent.keyboard("Sholeh");
+        // Submit the form
+        await userEvent.click(submitButton);
 
-    //     // Submit the form
-    //     await userEvent.click(submitButton);
+        /* assert */
+        expect(mockUpdateResume).toHaveBeenCalled();
+        expect(mockUpdateResume).toBeCalledWith({
+            personalDetails: {
+                firstName: "Muhammad",
+                lastName: "Sholeh",
+                jobTitle: "",
+                address1: "",
+                address2: "",
+                phone: "",
+                email: "muhammadsholeh@gmail.com",
+                socialLinks: [],
+            },
+        });
+    });
 
-    //     /* assert */
-    //     expect(mockUpdateResume).toHaveBeenCalledOnce();
-    //     // expect(mockUpdateResume).toBeCalledWith({
-    //     //     firstName: "Muhammad",
-    //     //     lastName: "Sholeh",
-    //     //     jobTitle: "",
-    //     //     address1: "",
-    //     //     address2: "",
-    //     //     phone: "",
-    //     //     email: "",
-    //     // });
-    // });
+    it("navigates to the next page on submission", async () => {
+        /* arrange */
+        const pushMock = vi.fn();
+        vi.spyOn(nextNavigation, "useRouter").mockReturnValue({
+            push: pushMock,
+            back: vi.fn(),
+            replace: vi.fn(),
+            forward: vi.fn(),
+            refresh: vi.fn(),
+            prefetch: vi.fn(),
+        });
+        render(<PersonalDetailsForm />);
+        const emailInput = screen.getByLabelText("Email Address");
 
-    // it("navigates to the next page on submission", async () => {
-    //     const pushMock = vi.fn();
-    //     render(<PersonalDetailsForm />);
-    //     await userEvent.click(screen.getByRole("button", { name: /next/i }));
-    //     expect(pushMock).toHaveBeenCalledWith("/work-experience");
-    // });
+        /* action */
+        await userEvent.click(emailInput);
+        await userEvent.keyboard("muhammadsholeh@gmail.com");
+        await userEvent.click(screen.getByRole("button", { name: /next/i }));
+
+        /* assert */
+        expect(pushMock).toHaveBeenCalledWith("/work-experience");
+    });
 });
