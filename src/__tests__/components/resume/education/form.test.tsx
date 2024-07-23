@@ -1,3 +1,3 @@
 import { describe } from "vitest";
 
-describe.todo('unimplemented education form test')
+describe.todo("unimplemented education form test");

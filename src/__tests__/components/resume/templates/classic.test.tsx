@@ -1,3 +1,3 @@
 import { describe } from "vitest";
 
-describe.todo('unimplemented classic template test')
+describe.todo("unimplemented classic template test");
