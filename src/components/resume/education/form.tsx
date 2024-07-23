@@ -30,9 +30,6 @@ export default function EducationForm(): React.ReactElement {
     const [resume, updateResume] = useResume();
     const [openItems, setOpenItems] = useState<{ [key: string]: boolean }>({});
 
-    console.log(resume?.educations);
-    console.log(EducationManyDefaultValues);
-
     // Use the useForm hook
     // https://react-hook-form.com/api/useform
     const form = useForm({
