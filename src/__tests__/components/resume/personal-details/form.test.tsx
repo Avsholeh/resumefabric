@@ -1,3 +1,83 @@
-import { describe } from "vitest";
+import PersonalDetailsForm from "@/components/resume/personal-details/form";
+import { cleanup, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { afterEach } from "node:test";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-describe.todo('unimplemented personal details form test')
+vi.mock("next/navigation", () => ({
+    useRouter: () => ({
+        push: vi.fn(),
+        route: "/",
+        query: {},
+        asPath: "/",
+    }),
+}));
+
+vi.mock("@/hooks/use-resume", () => ({
+    __esModule: true,
+    default: vi.fn(() => ([null, vi.fn()])),
+}));
+
+describe("PersonalDetailsForm", () => {
+    beforeEach(() => {
+        cleanup(); // Clean up the document body after each test
+        userEvent.setup(); // Setup user events
+    });
+
+    afterEach(() => {
+        vi.clearAllMocks(); // Clear all mocks before each test
+    });
+
+    it("renders correctly", () => {
+        render(<PersonalDetailsForm />);
+        expect(screen.getByLabelText("First Name")).toBeDefined();
+        expect(screen.getByLabelText("Last Name")).toBeDefined();
+        expect(screen.getByLabelText("Job Title")).toBeDefined();
+        expect(screen.getByLabelText("Address 1")).toBeDefined();
+        expect(screen.getByLabelText("Address 2")).toBeDefined();
+        expect(screen.getByLabelText("Phone")).toBeDefined();
+        expect(screen.getByLabelText("Email Address")).toBeDefined();
+    });
+
+    // it("submits the form with correct values", async () => {
+    //     /* arrange */
+    //     const mockUpdateResume = vi.fn();
+    //     vi.mocked(useResume).mockReturnValue([null, mockUpdateResume]);
+
+    //     render(<PersonalDetailsForm />);
+
+
+    //     const firstNameInput = screen.getByLabelText("First Name");
+    //     const lastNameInput = screen.getByLabelText("Last Name");
+    //     const submitButton = screen.getByRole("button", { name: /next/i });
+
+    //     /* action */
+    //     // Fill the form
+    //     await userEvent.click(firstNameInput);
+    //     await userEvent.keyboard("Muhammad");
+    //     await userEvent.click(lastNameInput);
+    //     await userEvent.keyboard("Sholeh");
+
+    //     // Submit the form
+    //     await userEvent.click(submitButton);
+
+    //     /* assert */
+    //     expect(mockUpdateResume).toHaveBeenCalledOnce();
+    //     // expect(mockUpdateResume).toBeCalledWith({
+    //     //     firstName: "Muhammad",
+    //     //     lastName: "Sholeh",
+    //     //     jobTitle: "",
+    //     //     address1: "",
+    //     //     address2: "",
+    //     //     phone: "",
+    //     //     email: "",
+    //     // });
+    // });
+
+    // it("navigates to the next page on submission", async () => {
+    //     const pushMock = vi.fn();
+    //     render(<PersonalDetailsForm />);
+    //     await userEvent.click(screen.getByRole("button", { name: /next/i }));
+    //     expect(pushMock).toHaveBeenCalledWith("/work-experience");
+    // });
+});
