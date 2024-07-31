@@ -1,6 +1,7 @@
 "use client";
 
 import FormButtonGroup from "@/components/shared/form-button-group";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -60,11 +61,10 @@ export default function SummaryForm(): React.ReactElement {
                         </div>
 
                         <div className="mb-5 flex items-center justify-between">
-                            <div className="avatar placeholder">
-                                <div className="bg-neutral text-neutral-content w-16 rounded-full">
-                                    <span className="text-3xl">RF</span>
-                                </div>
-                            </div>
+                            <Avatar className="h-14 w-14">
+                                <AvatarImage src="" alt="profile-picture" />
+                                <AvatarFallback>RF</AvatarFallback>
+                            </Avatar>
                             <div className="flex flex-col">
                                 <FormField
                                     name="profilePicture"
@@ -107,7 +107,8 @@ export default function SummaryForm(): React.ReactElement {
                             name="summary"
                             control={form.control}
                             render={({ field }) => (
-                                <FormItem className="mb-2 flex w-full">
+                                <FormItem className="mb-2 w-full">
+                                    <FormLabel>Description</FormLabel>
                                     <FormControl>
                                         <Textarea {...field} />
                                     </FormControl>
