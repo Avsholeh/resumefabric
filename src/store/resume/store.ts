@@ -1,34 +1,13 @@
-import { AdditionalSchema } from "@/schema/additional";
-import { EducationSchema } from "@/schema/education";
-import { PersonalDetailType } from "@/schema/personal-details";
-import { SkillSchema } from "@/schema/skills";
-import { WorkExperienceSchema } from "@/schema/work-experience";
+import { ResumeType } from "@/schema/resume";
 import { v4 as uuidv4 } from "uuid";
-import { z } from "zod";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-import { ResumeDefault } from "./default";
+import { ResumeItemType } from "../../schema/resume";
+import { ResumeDefault as initialResumeState } from "./default";
 
-type PersonalDetailState = PersonalDetailType;
-type WorkExperienceState = z.infer<typeof WorkExperienceSchema>;
-type EducationState = z.infer<typeof EducationSchema>;
-type SkillState = z.infer<typeof SkillSchema>;
-type AdditionalState = z.infer<typeof AdditionalSchema>;
-
-type ResumeItem = {
-  id: string | null;
-  personalDetails: PersonalDetailState;
-  workExperiences: WorkExperienceState[];
-  educations: EducationState[];
-  skills: SkillState;
-  additional: AdditionalState;
-};
-
-type ResumeState = {
-  activeResume: string | null;
-  resumeList: ResumeItem[];
-};
+type ResumeState = ResumeType;
+type ResumeItem = ResumeItemType;
 
 type ResumeAction = {
   createNewResume: () => void;
@@ -38,7 +17,7 @@ type ResumeAction = {
 
 export type ResumeStore = ResumeState & ResumeAction;
 
-export const createResumeStore = (initState: ResumeState = ResumeDefault) => {
+export const createResumeStore = (initState: ResumeState = initialResumeState) => {
   return create(
     persist(
       immer<ResumeStore>((set, get) => ({
