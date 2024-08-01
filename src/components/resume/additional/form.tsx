@@ -3,25 +3,21 @@
 import FormButtonGroup from "@/components/shared/form-button-group";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
-import { AdditionalSchema, AdditionalType } from "@/schema/additional";
-import { AdditionalDefault } from "@/store/resume/default";
+import { AdditionalType } from "@/schema/additional";
 import { useResumeStore } from "@/store/resume/provider";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import { SubmitHandler, useFieldArray, useFormContext } from "react-hook-form";
 import SoftwareForm from "./software-form";
 
 export default function AdditionalForm(): React.ReactElement {
   const router = useRouter();
 
   // This hook is used to get the resume data from the context
-  const { getResumeItem, updateResumeItem } = useResumeStore((state) => state);
+  const { updateResumeItem } = useResumeStore((state) => state);
 
-  // This hook is used to create a form instance
-  const form = useForm<AdditionalType>({
-    resolver: zodResolver(AdditionalSchema),
-    defaultValues: getResumeItem("additional") ?? AdditionalDefault,
-  });
+  // This hook is used to create a form instance with the useFormContext hook
+  // https://react-hook-form.com/api/useformcontext
+  const form = useFormContext<AdditionalType>();
 
   const {
     fields: softwareFields,
