@@ -1,5 +1,6 @@
 import AppNav from "@/components/shared/app-nav";
 import WebvitalProvider from "@/components/webvital-provider";
+import { ResumeStoreProvider } from "@/store/resume/provider";
 
 export default function ResumeLayout({
     children,
@@ -14,16 +15,20 @@ export default function ResumeLayout({
     if ((process.env.NODE_ENV as string) === "development" && (process.env.ENABLE_WEBVITAL as string)) {
         return (
             <WebvitalProvider>
-                <AppNav />
-                <div className="px-app flex flex-col items-center">{children}</div>
+                <ResumeStoreProvider>
+                    <AppNav />
+                    <div className="px-app flex flex-col items-center">{children}</div>
+                </ResumeStoreProvider>
             </WebvitalProvider>
         );
     }
 
     return (
         <>
-            <AppNav />
-            <div className="px-app flex flex-col items-center">{children}</div>
+            <ResumeStoreProvider>
+                <AppNav />
+                <div className="px-app flex flex-col items-center">{children}</div>
+            </ResumeStoreProvider>
         </>
     );
 }
