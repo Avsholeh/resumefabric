@@ -1,14 +1,21 @@
 "use client";
 
-import { PersonalDetailsFormDynamic } from "@/components/resume/personal-details/form";
-import ClassicTemplate from "@/components/resume/templates/classic";
 import ResumeContainer from "@/components/shared/resume-container";
 import { Form } from "@/components/ui/form";
 import { PersonalDetailSchema, PersonalDetailType } from "@/schema/personal-details";
 import { PersonalDetailsDefault } from "@/store/resume/default";
 import { useResumeStore } from "@/store/resume/provider";
 import { zodResolver } from "@hookform/resolvers/zod";
+import dynamic from "next/dynamic";
 import { useForm } from "react-hook-form";
+
+export const PersonalDetailsFormDynamic = dynamic(() => import("@/components/resume/personal-details/form"), {
+  ssr: false, // Disable server side rendering for this component
+});
+
+export const ClassicTemplateDynamic = dynamic(() => import("@/components/resume/templates/classic"), {
+  ssr: false, // Disable server side rendering for this component
+});
 
 export default function PersonalDetailsPage() {
   // Use the useResume hook to get the resume and update the resume
@@ -23,7 +30,7 @@ export default function PersonalDetailsPage() {
 
   return (
     <Form {...form}>
-      <ResumeContainer form={<PersonalDetailsFormDynamic />} template={<ClassicTemplate />} />
+      <ResumeContainer form={<PersonalDetailsFormDynamic />} template={<ClassicTemplateDynamic />} />
     </Form>
   );
 }

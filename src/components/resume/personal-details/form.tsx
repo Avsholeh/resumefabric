@@ -6,14 +6,9 @@ import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessa
 import { Input } from "@/components/ui/input";
 import { PersonalDetailType } from "@/schema/personal-details";
 import { useResumeStore } from "@/store/resume/provider";
-import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useFormContext } from "react-hook-form";
 import SocialLinks from "./social-link";
-
-export const PersonalDetailsFormDynamic = dynamic(() => import("@/components/resume/personal-details/form"), {
-  ssr: false, // Disable server side rendering for this component
-});
 
 export default function PersonalDetailsForm(): React.ReactElement {
   const router = useRouter();

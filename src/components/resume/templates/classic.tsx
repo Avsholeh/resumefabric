@@ -6,7 +6,7 @@ import { useFormContext } from "react-hook-form";
 
 export default function ClassicTemplate(): React.ReactElement {
   const form = useFormContext<PersonalDetailType>();
-  const { firstName, lastName, jobTitle, address1, address2, email } = identity.personalDetails;
+  let { firstName, lastName, jobTitle, address1, address2, email } = identity.personalDetails;
 
   return (
     <div className="border p-10 font-serif text-sm md:p-20">
