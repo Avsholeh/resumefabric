@@ -9,11 +9,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import dynamic from "next/dynamic";
 import { useForm } from "react-hook-form";
 
-export const PersonalDetailsFormDynamic = dynamic(() => import("@/components/resume/personal-details/form"), {
+const PersonalDetailsFormDynamic = dynamic(() => import("@/components/resume/personal-details/form"), {
   ssr: false, // Disable server side rendering for this component
 });
 
-export const ClassicTemplateDynamic = dynamic(() => import("@/components/resume/templates/classic"), {
+const ClassicTemplateDynamic = dynamic(() => import("@/components/resume/templates/classic"), {
   ssr: false, // Disable server side rendering for this component
 });
 
