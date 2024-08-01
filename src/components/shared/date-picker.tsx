@@ -7,47 +7,47 @@ import { FormControl } from "../ui/form";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
 type DateSelectorProps = {
-    field: {
-        value: string | null;
-        onChange: (date: string | undefined) => void;
-    };
-    disabled?: boolean;
+  field: {
+    value: string | null;
+    onChange: (date: string | undefined) => void;
+  };
+  disabled?: boolean;
 };
 
 export default function DatePicker({ field, disabled }: DateSelectorProps) {
-    return (
-        <Popover>
-            <PopoverTrigger asChild>
-                <FormControl>
-                    <Button
-                        variant={"outline"}
-                        className={cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
-                        disabled={disabled}
-                    >
-                        {!!field.value ? field.value : <span>Pick a date</span>}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                </FormControl>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                    mode="single"
-                    onSelect={(date) => field.onChange(date ? format(date, "PPP") : undefined)}
-                    disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
-                    initialFocus
-                    captionLayout="dropdown"
-                    fromYear={1900}
-                    toYear={2024}
-                    classNames={{
-                        caption: "relative flex items-center justify-center px-10 pt-1",
-                        caption_label: "flex items-center gap-2 text-sm font-medium",
-                        caption_dropdowns: "flex gap-4 [&_.rdp-vhidden]:hidden",
-                        dropdown_month: "relative inline-flex items-center",
-                        dropdown_year: "relative inline-flex items-center",
-                        dropdown: "absolute inset-0 z-10 w-full cursor-pointer appearance-none opacity-0",
-                    }}
-                />
-            </PopoverContent>
-        </Popover>
-    );
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <FormControl>
+          <Button
+            variant={"outline"}
+            className={cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
+            disabled={disabled}
+          >
+            {!!field.value ? field.value : <span>Pick a date</span>}
+            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+          </Button>
+        </FormControl>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start">
+        <Calendar
+          mode="single"
+          onSelect={(date) => field.onChange(date ? format(date, "PPP") : undefined)}
+          disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
+          initialFocus
+          captionLayout="dropdown"
+          fromYear={1900}
+          toYear={2024}
+          classNames={{
+            caption: "relative flex items-center justify-center px-10 pt-1",
+            caption_label: "flex items-center gap-2 text-sm font-medium",
+            caption_dropdowns: "flex gap-4 [&_.rdp-vhidden]:hidden",
+            dropdown_month: "relative inline-flex items-center",
+            dropdown_year: "relative inline-flex items-center",
+            dropdown: "absolute inset-0 z-10 w-full cursor-pointer appearance-none opacity-0",
+          }}
+        />
+      </PopoverContent>
+    </Popover>
+  );
 }

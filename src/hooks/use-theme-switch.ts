@@ -2,17 +2,17 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 export default function useThemeSwitch() {
-    const [mounted, setMounted] = useState(false);
-    const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
 
-    // useEffect only runs on the client, so now we can safely show the UI
-    useEffect(() => {
-        setMounted(true);
-    }, []);
+  // useEffect only runs on the client, so now we can safely show the UI
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-    if (!mounted) {
-        return { theme: "light", setTheme };
-    }
+  if (!mounted) {
+    return { theme: "light", setTheme };
+  }
 
-    return { theme, setTheme };
+  return { theme, setTheme };
 }

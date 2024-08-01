@@ -9,17 +9,17 @@ export type ResumeStoreApi = ReturnType<typeof createResumeStore>;
 export const ResumeStoreContext = createContext<ResumeStoreApi | undefined>(undefined);
 
 export const ResumeStoreProvider = ({ children }: { children: React.ReactNode }): React.ReactElement => {
-    const storeRef = useRef<ResumeStoreApi>();
-    if (!storeRef.current) {
-        storeRef.current = createResumeStore(ResumeDefault);
-    }
-    return <ResumeStoreContext.Provider value={storeRef.current}>{children}</ResumeStoreContext.Provider>;
+  const storeRef = useRef<ResumeStoreApi>();
+  if (!storeRef.current) {
+    storeRef.current = createResumeStore(ResumeDefault);
+  }
+  return <ResumeStoreContext.Provider value={storeRef.current}>{children}</ResumeStoreContext.Provider>;
 };
 
 export const useResumeStore = <T,>(selector: (store: ResumeStore) => T): T => {
-    const store = useContext(ResumeStoreContext);
-    if (!store) {
-        throw new Error("useResumeStore must be used within a ResumeStoreProvider");
-    }
-    return useStore(store, selector);
+  const store = useContext(ResumeStoreContext);
+  if (!store) {
+    throw new Error("useResumeStore must be used within a ResumeStoreProvider");
+  }
+  return useStore(store, selector);
 };

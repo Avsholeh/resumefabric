@@ -7,12 +7,12 @@ import { WorkExperienceSchema } from "./work-experience";
 
 // Create schema for the resume form
 export const ResumeSchema = z.object({
-    id: z.string().min(36, { message: "Please provide a valid ID" }), // length of a UUID v4
-    personalDetails: PersonalDetailSchema.optional(),
-    workExperiences: z.array(WorkExperienceSchema).optional(),
-    educations: z.array(EducationSchema).optional(),
-    skills: SkillSchema.optional(),
-    additional: AdditionalSchema.optional(),
+  id: z.string().min(36, { message: "Please provide a valid ID" }), // length of a UUID v4
+  personalDetails: PersonalDetailSchema.optional(),
+  workExperiences: z.array(WorkExperienceSchema).optional(),
+  educations: z.array(EducationSchema).optional(),
+  skills: SkillSchema.optional(),
+  additional: AdditionalSchema.optional(),
 });
 
 // Create schema for the resume array

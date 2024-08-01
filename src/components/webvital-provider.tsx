@@ -3,12 +3,12 @@
 import { useReportWebVitals } from "next/web-vitals";
 
 export default function WebvitalProvider({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    useReportWebVitals((metric) => {
-        console.log(metric);
-    });
-    return <>{children}</>;
+  useReportWebVitals((metric) => {
+    console.log(metric);
+  });
+  return <>{children}</>;
 }

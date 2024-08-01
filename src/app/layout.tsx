@@ -5,36 +5,36 @@ import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 
 const fontSans = FontSans({
-    subsets: ["latin"],
-    variable: "--font-sans",
+  subsets: ["latin"],
+  variable: "--font-sans",
 });
 
 export const metadata: Metadata = {
-    title: "ResumeFabric",
-    description: "Resume Builder Online",
+  title: "ResumeFabric",
+  description: "Resume Builder Online",
 
-    // Common iOS issues
-    // https://nextjs.org/docs/messages/react-hydration-error#common-ios-issues
-    formatDetection: {
-        telephone: false,
-        date: false,
-        email: false,
-        address: false,
-    },
+  // Common iOS issues
+  // https://nextjs.org/docs/messages/react-hydration-error#common-ios-issues
+  formatDetection: {
+    telephone: false,
+    date: false,
+    email: false,
+    address: false,
+  },
 };
 
 export default function RootLayout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    return (
-        <html lang="en" suppressHydrationWarning>
-            <body className={cn("bg-background font-sans antialiased", fontSans.variable)}>
-                <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-                    {children}
-                </ThemeProvider>
-            </body>
-        </html>
-    );
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body className={cn("bg-background font-sans antialiased", fontSans.variable)}>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+          {children}
+        </ThemeProvider>
+      </body>
+    </html>
+  );
 }
