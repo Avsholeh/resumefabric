@@ -10,14 +10,13 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { EducationManySchema, type EducationManyType } from "@/schema/education";
+import { type EducationManyType } from "@/schema/education";
 import { EducationDefault } from "@/store/resume/default";
 import { useResumeStore } from "@/store/resume/provider";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronsUpDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import { SubmitHandler, useFieldArray, useFormContext } from "react-hook-form";
 
 type WatchFieldType = "schoolName" | "degree" | "startDate" | "endDate" | "currentlyStudyingHere";
 
@@ -25,17 +24,14 @@ export default function EducationForm(): React.ReactElement {
   const router = useRouter();
 
   // This hook returns the resume store and the update function
-  const { getResumeItem, updateResumeItem } = useResumeStore((state) => state);
+  const { updateResumeItem } = useResumeStore((state) => state);
 
   // This state is used to keep track of the open items in the collapsible
   const [openItems, setOpenItems] = useState<{ [key: string]: boolean }>({});
 
-  // Use the useForm hook
-  // https://react-hook-form.com/api/useform
-  const form = useForm({
-    resolver: zodResolver(EducationManySchema),
-    defaultValues: { educations: getResumeItem("educations") ?? [EducationDefault] },
-  });
+  // Use the useFormContext hook to get the form context
+  // https://react-hook-form.com/api/useformcontext
+  const form = useFormContext<EducationManyType>();
 
   // Use the field array hook
   // https://react-hook-form.com/api/usefieldarray
