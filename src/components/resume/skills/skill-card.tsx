@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { SkillManyField } from "@/schema/skills";
+import { SkillType } from "@/schema/skills";
 import {
     Controller,
     type Control,
@@ -14,11 +14,11 @@ import {
 } from "react-hook-form";
 
 type SkillCardProps = {
-    skill: FieldArrayWithId<SkillManyField>;
+    skill: FieldArrayWithId<SkillType>;
     index: number;
-    control: Control<SkillManyField>;
+    control: Control<SkillType>;
     isDelete?: boolean;
-    watch: UseFormWatch<SkillManyField>;
+    watch: UseFormWatch<SkillType>;
     remove: UseFieldArrayRemove;
 };
 
@@ -36,7 +36,7 @@ export default function SkillCard({
                 <div className="flex flex-col items-center justify-between gap-5 md:flex-row">
                     <div className="flex w-full items-center gap-5">
                         <FormField
-                            name={`skills.items.${index}.name`}
+                            name={`items.${index}.name`}
                             control={control}
                             defaultValue={skill.name}
                             render={({ field }) => (
@@ -51,12 +51,12 @@ export default function SkillCard({
                     <div
                         className={cn(
                             "flex w-full items-center gap-5 md:w-auto",
-                            !!watch("skills.showExperienceLevel") ? "justify-between" : "justify-end"
+                            !!watch("showExperienceLevel") ? "justify-between" : "justify-end"
                         )}
                     >
-                        {!!watch("skills.showExperienceLevel") && (
+                        {!!watch("showExperienceLevel") && (
                             <Controller
-                                name={`skills.items.${index}.experienceLevel`}
+                                name={`items.${index}.experienceLevel`}
                                 control={control}
                                 defaultValue={skill.experienceLevel}
                                 render={({ field }) => (

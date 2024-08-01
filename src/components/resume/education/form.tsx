@@ -10,13 +10,9 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import useResume from "@/hooks/use-resume";
-import {
-    EducationDefaultValues,
-    EducationManyDefaultValues,
-    EducationManySchema,
-    type EducationManyField,
-} from "@/schema/education";
+import { EducationManySchema, type EducationManyType } from "@/schema/education";
+import { EducationDefault } from "@/store/resume/default";
+import { useResumeStore } from "@/store/resume/provider";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronsUpDown } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -27,23 +23,23 @@ type WatchFieldType = "schoolName" | "degree" | "startDate" | "endDate" | "curre
 
 export default function EducationForm(): React.ReactElement {
     const router = useRouter();
-    const [resume, updateResume] = useResume();
+
+    // This hook returns the resume store and the update function
+    const { getResumeItem, updateResumeItem } = useResumeStore((state) => state);
+
+    // This state is used to keep track of the open items in the collapsible
     const [openItems, setOpenItems] = useState<{ [key: string]: boolean }>({});
 
     // Use the useForm hook
     // https://react-hook-form.com/api/useform
     const form = useForm({
         resolver: zodResolver(EducationManySchema),
-        defaultValues: resume?.educations ? { educations: resume.educations } : EducationManyDefaultValues,
+        defaultValues: { educations: getResumeItem("educations") ?? [EducationDefault] },
     });
 
     // Use the field array hook
     // https://react-hook-form.com/api/usefieldarray
-    const {
-        fields: educations,
-        remove,
-        append,
-    } = useFieldArray({
+    const { fields, remove, append } = useFieldArray({
         control: form.control,
         name: "educations",
     });
@@ -53,6 +49,7 @@ export default function EducationForm(): React.ReactElement {
         return form.watch(`educations.${index}.${field}`);
     };
 
+    // Handle open items change event for the collapsible component
     const handleOpenItemsChange = (id: string) => {
         setOpenItems((prev) => ({
             ...prev,
@@ -61,8 +58,10 @@ export default function EducationForm(): React.ReactElement {
     };
 
     // Handle form submission event
-    const onSubmit: SubmitHandler<EducationManyField> = async (fieldValue) => {
-        updateResume<EducationManyField>(fieldValue);
+    const onSubmit: SubmitHandler<EducationManyType> = async (fieldValue) => {
+        if (fieldValue.educations) {
+            updateResumeItem("educations", fieldValue.educations);
+        }
         router.push("/skills");
     };
 
@@ -84,7 +83,7 @@ export default function EducationForm(): React.ReactElement {
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        {educations.map((field, index) => (
+                        {fields.map((field, index) => (
                             <Card key={field.id} className="mb-3">
                                 <CardContent className="pt-6">
                                     <Collapsible
@@ -248,7 +247,7 @@ export default function EducationForm(): React.ReactElement {
                                                     )}
                                                 />
                                             </div>
-                                            {educations.length > 1 && (
+                                            {fields.length > 1 && (
                                                 <div className="flex w-full justify-end">
                                                     <BtnDelete onClick={() => remove(index)} />
                                                 </div>
@@ -259,7 +258,7 @@ export default function EducationForm(): React.ReactElement {
                             </Card>
                         ))}
                         <div className="flex w-full justify-end md:mb-0">
-                            <Button type="button" variant={"ghost"} onClick={() => append(EducationDefaultValues)}>
+                            <Button type="button" variant={"ghost"} onClick={() => append(EducationDefault)}>
                                 + Add More Education
                             </Button>
                         </div>

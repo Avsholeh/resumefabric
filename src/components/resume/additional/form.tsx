@@ -3,8 +3,9 @@
 import FormButtonGroup from "@/components/shared/form-button-group";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
-import useResume from "@/hooks/use-resume";
-import { AdditionalDefaultValue, AdditionalField, AdditionalSchema } from "@/schema/additional";
+import { AdditionalSchema, AdditionalType } from "@/schema/additional";
+import { AdditionalDefault } from "@/store/resume/default";
+import { useResumeStore } from "@/store/resume/provider";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
@@ -14,12 +15,12 @@ export default function AdditionalForm(): React.ReactElement {
     const router = useRouter();
 
     // This hook is used to get the resume data from the context
-    const [resume, updateResume] = useResume();
+    const { getResumeItem, updateResumeItem } = useResumeStore((state) => state);
 
     // This hook is used to create a form instance
-    const form = useForm<AdditionalField>({
+    const form = useForm<AdditionalType>({
         resolver: zodResolver(AdditionalSchema),
-        defaultValues: resume?.additional ? resume.additional : AdditionalDefaultValue,
+        defaultValues: getResumeItem("additional") ?? AdditionalDefault,
     });
 
     const {
@@ -39,8 +40,9 @@ export default function AdditionalForm(): React.ReactElement {
         }
     };
 
-    const onSubmit: SubmitHandler<AdditionalField> = (fieldValue) => {
-        updateResume<{ additional: AdditionalField }>({ additional: fieldValue });
+    const onSubmit: SubmitHandler<AdditionalType> = (fieldValue) => {
+        // updateResume<{ additional: AdditionalType }>({ additional: fieldValue });
+        updateResumeItem("additional", fieldValue);
         router.push("/summary");
     };
 

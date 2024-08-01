@@ -4,8 +4,9 @@ import FormButtonGroup from "@/components/shared/form-button-group";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import useResume from "@/hooks/use-resume";
-import { PersonalDetailDefaultValues, PersonalDetailField, PersonalDetailSchema } from "@/schema/personal-details";
+import { PersonalDetailSchema, PersonalDetailType } from "@/schema/personal-details";
+import { PersonalDetailsDefault } from "@/store/resume/default";
+import { useResumeStore } from "@/store/resume/provider";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -15,19 +16,20 @@ export default function PersonalDetailsForm(): React.ReactElement {
     const router = useRouter();
 
     // Use the useResume hook to get the resume and update the resume
-    const [resume, updateResume] = useResume();
+    const { getResumeItem, updateResumeItem } = useResumeStore((state) => state);
 
     // Use the useForm hook
     // https://react-hook-form.com/api/useform
-    const form = useForm<PersonalDetailField>({
+    const form = useForm<PersonalDetailType>({
         resolver: zodResolver(PersonalDetailSchema),
-        defaultValues: resume?.personalDetails ? resume.personalDetails : PersonalDetailDefaultValues,
+        // defaultValues: resume?.personalDetails ? resume.personalDetails : PersonalDetailDefaultValues,
+        defaultValues: getResumeItem("personalDetails") ?? PersonalDetailsDefault,
     });
 
     // Handle form submission
-    const onSubmit: SubmitHandler<PersonalDetailField> = async (fieldValue) => {
+    const onSubmit: SubmitHandler<PersonalDetailType> = async (fieldValue) => {
         // Update the resume in local storage with the latest personal details
-        updateResume<{ personalDetails: PersonalDetailField }>({ personalDetails: fieldValue });
+        updateResumeItem("personalDetails", fieldValue);
 
         // Redirect to the next step
         router.push("/work-experience");

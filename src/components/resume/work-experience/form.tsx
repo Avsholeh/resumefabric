@@ -10,13 +10,9 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import useResume from "@/hooks/use-resume";
-import {
-    type WorkExperienceManyField,
-    WorkExperienceDefaultValues,
-    WorkExperienceManyDefaultValues,
-    WorkExperienceManySchema,
-} from "@/schema/work-experience";
+import { type WorkExperienceManyType, WorkExperienceManySchema } from "@/schema/work-experience";
+import { WorkExperienceDefault } from "@/store/resume/default";
+import { useResumeStore } from "@/store/resume/provider";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronsUpDown } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -28,17 +24,15 @@ type watchFieldType = "positionTitle" | "companyName" | "startDate" | "endDate" 
 export default function WorkExperienceForm(): React.ReactElement {
     const router = useRouter();
 
-    // This hook is used to get and set the resume data
-    const [resume, updateResume] = useResume();
+    // This hook is used to get and set the work experience data
+    const { getResumeItem, updateResumeItem } = useResumeStore((state) => state);
 
     // This state is used to keep track of the open state of the collapsible items
     const [openItems, setOpenItems] = useState<{ [key: string]: boolean }>({});
 
-    const form = useForm<WorkExperienceManyField>({
+    const form = useForm<WorkExperienceManyType>({
         resolver: zodResolver(WorkExperienceManySchema),
-        defaultValues: resume?.workExperiences
-            ? { workExperiences: resume.workExperiences }
-            : WorkExperienceManyDefaultValues,
+        defaultValues: { workExperiences: getResumeItem("workExperiences") ?? [WorkExperienceDefault] },
     });
 
     const { fields, append, remove } = useFieldArray({
@@ -59,8 +53,8 @@ export default function WorkExperienceForm(): React.ReactElement {
         return form.watch(`workExperiences.${index}.${field}`);
     };
 
-    const onSubmit: SubmitHandler<WorkExperienceManyField> = async (fieldValue) => {
-        updateResume<WorkExperienceManyField>(fieldValue);
+    const onSubmit: SubmitHandler<WorkExperienceManyType> = async (fieldValue) => {
+        updateResumeItem("workExperiences", fieldValue.workExperiences);
         router.push("/education");
     };
 
@@ -258,7 +252,7 @@ export default function WorkExperienceForm(): React.ReactElement {
                         ))}
 
                         <div className="flex w-full justify-end md:mb-0">
-                            <Button type="button" variant={"ghost"} onClick={() => append(WorkExperienceDefaultValues)}>
+                            <Button type="button" variant={"ghost"} onClick={() => append(WorkExperienceDefault)}>
                                 + Add More Work Experience
                             </Button>
                         </div>

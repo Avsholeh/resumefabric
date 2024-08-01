@@ -13,11 +13,11 @@ import {
     type UseFieldArrayRemove,
     useFormContext,
 } from "react-hook-form";
-import { AdditionalField, SoftwareField } from "../../../schema/additional";
+import { AdditionalType, SoftwareType } from "../../../schema/additional";
 
 type Props = React.HTMLAttributes<HTMLDivElement> & {
-    fields: FieldArrayWithId<SoftwareField>[];
-    append: UseFieldArrayAppend<AdditionalField>;
+    fields: FieldArrayWithId<SoftwareType>[];
+    append: UseFieldArrayAppend<AdditionalType>;
     remove: UseFieldArrayRemove;
 };
 

@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
-import useResume from "@/hooks/use-resume";
-import { SkillManyDefaultValues, SkillManyField, SkillManySchema } from "@/schema/skills";
+import { SkillSchema, type SkillType } from "@/schema/skills";
+import { SkillsDefault } from "@/store/resume/default";
+import { useResumeStore } from "@/store/resume/provider";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
@@ -15,29 +16,25 @@ import SkillCard from "./skill-card";
 export default function SkillsForm(): React.ReactElement {
     const router = useRouter();
 
-    const [resume, updateResume] = useResume();
+    const { getResumeItem, updateResumeItem } = useResumeStore((state) => state);
 
     // Create a form with the useForm hook
     // https://react-hook-form.com/api/useform
-    const form = useForm<SkillManyField>({
-        resolver: zodResolver(SkillManySchema),
-        defaultValues: resume?.skills ? { skills: resume.skills } : SkillManyDefaultValues,
+    const form = useForm<SkillType>({
+        resolver: zodResolver(SkillSchema),
+        defaultValues: getResumeItem("skills") ?? SkillsDefault,
     });
 
     // Use the useFieldArray hook to manage the skills array
     // https://react-hook-form.com/api/usefieldarray
-    const {
-        fields: skills,
-        append,
-        remove,
-    } = useFieldArray({
+    const { fields, append, remove } = useFieldArray({
         control: form.control,
-        name: "skills.items",
+        name: "items",
     });
 
     // Define the submit handler
-    const onSubmit: SubmitHandler<SkillManyField> = async (fieldValue) => {
-        updateResume<SkillManyField>(fieldValue);
+    const onSubmit: SubmitHandler<SkillType> = async (fieldValue) => {
+        updateResumeItem("skills", fieldValue);
         router.push("/additional");
     };
 
@@ -59,7 +56,7 @@ export default function SkillsForm(): React.ReactElement {
                     <CardContent>
                         <div className="mb-5 flex">
                             <FormField
-                                name="skills.showExperienceLevel"
+                                name="showExperienceLevel"
                                 control={form.control}
                                 render={({ field }) => (
                                     <FormItem className="flex items-center space-x-2">
@@ -76,7 +73,7 @@ export default function SkillsForm(): React.ReactElement {
                             />
                         </div>
 
-                        {skills.map((skill, index) => (
+                        {fields.map((skill, index) => (
                             <SkillCard
                                 key={skill.id}
                                 skill={skill}
@@ -84,7 +81,7 @@ export default function SkillsForm(): React.ReactElement {
                                 control={form.control}
                                 watch={form.watch}
                                 remove={remove}
-                                isDelete={skills.length > 1}
+                                isDelete={fields.length > 1}
                             />
                         ))}
 
