@@ -1,12 +1,25 @@
+"use client";
+
+import identity from "@/components/resume/templates/identity.json";
+import { PersonalDetailType } from "@/schema/personal-details";
+import { useFormContext } from "react-hook-form";
+
 export default function ClassicTemplate(): React.ReactElement {
+  const form = useFormContext<PersonalDetailType>();
+  const { firstName, lastName, jobTitle, address1, address2, email } = identity.personalDetails;
+
   return (
     <div className="border p-10 font-serif text-sm md:p-20">
       <header className="mb-5">
-        <div className="text-lg font-bold">Chris Candidate</div>
-        <div className="font-bold">Human Resource Manager</div>
+        <div className="text-lg font-bold">
+          {form.watch("firstName") || firstName} {form.watch("lastName") || lastName}
+        </div>
+        <div className="font-bold">{form.watch("jobTitle") || jobTitle}</div>
         <div className="flex justify-between">
-          <div>4759 Sunnydale Lane, Plano, TX 75071</div>
-          <div>email@youremail.com</div>
+          <div>
+            {form.watch("address1") || address1} {form.watch("address2") || address2}
+          </div>
+          <div>{form.watch("email") || email}</div>
         </div>
         <div className="flex justify-between">
           <div>(469) 385-2948</div>
