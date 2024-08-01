@@ -18,21 +18,5 @@ export const EducationManySchema = z.object({
 });
 
 // Define a type alias for the inferred type of the schema
-export type EducationField = z.infer<typeof EducationSchema>;
-export type EducationManyField = z.infer<typeof EducationManySchema>;
-
-// Define default values for the education form
-export const EducationDefaultValues = {
-    schoolName: "",
-    schoolLocation: "",
-    degree: "",
-    fieldStudy: "",
-    startDate: "",
-    endDate: "",
-    currentlyStudyingHere: true,
-    educationSummary: "",
-};
-
-export const EducationManyDefaultValues = {
-    educations: [EducationDefaultValues],
-};
+export type EducationType = z.infer<typeof EducationSchema>;
+export type EducationManyType = z.infer<typeof EducationManySchema>;

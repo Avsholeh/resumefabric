@@ -32,17 +32,6 @@ export const AdditionalSchema = z.object({
     // references: z.boolean(),
 });
 
-export const AdditionalDefaultValue = {
-    // custom_section: false,
-    // certifications: false,
-    // accomplishments: false,
-    // volunteering: false,
-    software: {
-        section: "Software",
-        items: [],
-    },
-};
-
-export type SoftwareField = z.infer<typeof SoftwareSchema>;
-export type LanguageField = z.infer<typeof LanguageSchema>;
-export type AdditionalField = z.infer<typeof AdditionalSchema>;
+export type SoftwareType = z.infer<typeof SoftwareSchema>;
+export type LanguageType = z.infer<typeof LanguageSchema>;
+export type AdditionalType = z.infer<typeof AdditionalSchema>;

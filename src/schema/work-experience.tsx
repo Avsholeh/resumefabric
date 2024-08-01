@@ -18,22 +18,5 @@ export const WorkExperienceManySchema = z.object({
 });
 
 // Define a type alias for the inferred type of the schema
-export type WorkExperienceField = z.infer<typeof WorkExperienceSchema>;
-export type WorkExperienceManyField = z.infer<typeof WorkExperienceManySchema>;
-
-// Define default values for the work experience form
-export const WorkExperienceDefaultValues = {
-    positionTitle: "",
-    companyName: "",
-    city: "",
-    state: "",
-    startDate: "",
-    endDate: "",
-    currentlyWorkingHere: true,
-    workSummary: "",
-};
-
-// Define default values for the work experience form
-export const WorkExperienceManyDefaultValues = {
-    workExperiences: [WorkExperienceDefaultValues],
-};
+export type WorkExperienceType = z.infer<typeof WorkExperienceSchema>;
+export type WorkExperienceManyType = z.infer<typeof WorkExperienceManySchema>;

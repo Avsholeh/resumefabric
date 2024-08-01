@@ -1,9 +1,9 @@
 import { z } from "zod";
 import { AdditionalSchema } from "./additional";
-import { EducationManyDefaultValues, EducationSchema } from "./education";
-import { PersonalDetailDefaultValues, PersonalDetailSchema } from "./personal-details";
-import { SkillDefaultValues, SkillSchema } from "./skills";
-import { WorkExperienceManyDefaultValues, WorkExperienceSchema } from "./work-experience";
+import { EducationSchema } from "./education";
+import { PersonalDetailSchema } from "./personal-details";
+import { SkillSchema } from "./skills";
+import { WorkExperienceSchema } from "./work-experience";
 
 // Create schema for the resume form
 export const ResumeSchema = z.object({
@@ -20,13 +20,4 @@ export const ResumeSchemaArray = z.array(ResumeSchema);
 
 // Define a type alias for the inferred type of the schema
 export type ResumeField = z.infer<typeof ResumeSchema>;
-export type ResumeArrayField = z.infer<typeof ResumeSchemaArray>;
-
-// Define default values for the resume form
-export const ResumeDefaultValue: ResumeField = {
-    id: "",
-    personalDetails: PersonalDetailDefaultValues,
-    workExperiences: WorkExperienceManyDefaultValues.workExperiences,
-    educations: EducationManyDefaultValues.educations,
-    skills: SkillDefaultValues,
-};
+export type ResumeManyType = z.infer<typeof ResumeSchemaArray>;
