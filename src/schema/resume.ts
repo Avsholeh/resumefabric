@@ -19,5 +19,5 @@ export const ResumeSchema = z.object({
 export const ResumeSchemaArray = z.array(ResumeSchema);
 
 // Define a type alias for the inferred type of the schema
-export type ResumeField = z.infer<typeof ResumeSchema>;
+export type ResumeType = z.infer<typeof ResumeSchema>;
 export type ResumeManyType = z.infer<typeof ResumeSchemaArray>;
