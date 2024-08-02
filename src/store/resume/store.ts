@@ -11,6 +11,7 @@ type ResumeItem = ResumeItemType;
 
 type ResumeAction = {
   createNewResume: () => void;
+  getActiveResumeItem: () => ResumeItem;
   getResumeItem: (field: keyof ResumeItem) => any;
   updateResumeItem: (field: keyof ResumeItem, value: any) => void;
 };
@@ -40,6 +41,10 @@ export const createResumeStore = (initState: ResumeState = initialResumeState) =
             }
             state.activeResume = newUUID;
           });
+        },
+
+        getActiveResumeItem: (): ResumeItem => {
+          return get().resumeList.find((resume) => resume.id === get().activeResume) as ResumeItem;
         },
 
         getResumeItem: (field: keyof ResumeItem) => {

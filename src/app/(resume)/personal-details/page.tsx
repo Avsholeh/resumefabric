@@ -19,18 +19,26 @@ const ClassicTemplateDynamic = dynamic(() => import("@/components/resume/templat
 
 export default function PersonalDetailsPage() {
   // Use the useResume hook to get the resume and update the resume
-  const { getResumeItem } = useResumeStore((state) => state);
+  const activeResumeItem = useResumeStore((state) => state.getActiveResumeItem());
 
   // Use the useForm hook
   // https://react-hook-form.com/api/useform
   const form = useForm<PersonalDetailType>({
     resolver: zodResolver(PersonalDetailSchema),
-    defaultValues: getResumeItem("personalDetails") ?? PersonalDetailsDefault,
+    defaultValues: activeResumeItem.personalDetails ?? PersonalDetailsDefault,
   });
 
   return (
     <Form {...form}>
-      <ResumeContainer form={<PersonalDetailsFormDynamic />} template={<ClassicTemplateDynamic />} />
+      <ResumeContainer
+        form={<PersonalDetailsFormDynamic />}
+        template={
+          <ClassicTemplateDynamic
+            resumeItem={activeResumeItem}
+            watchItem={{ personalDetails: form.watch() as PersonalDetailType }}
+          />
+        }
+      />
     </Form>
   );
 }

@@ -1,25 +1,63 @@
 "use client";
 
-import identity from "@/components/resume/templates/identity.json";
 import { PersonalDetailType } from "@/schema/personal-details";
-import { useFormContext } from "react-hook-form";
+import { ResumeItemType } from "@/schema/resume";
+import { useMemo } from "react";
+import { identity } from "./identity";
 
-export default function ClassicTemplate(): React.ReactElement {
-  const form = useFormContext<PersonalDetailType>();
-  let { firstName, lastName, jobTitle, address1, address2, email } = identity.personalDetails;
+type Props = {
+  resumeItem: ResumeItemType;
+  watchItem: Partial<ResumeItemType>;
+};
 
+const getPersonalDetail = (
+  watchItem: Partial<ResumeItemType>,
+  resumeItem: ResumeItemType,
+  field: keyof PersonalDetailType
+): PersonalDetailType[keyof PersonalDetailType] =>
+  watchItem?.personalDetails?.[field] || resumeItem?.personalDetails?.[field] || identity.personalDetails[field];
+
+export default function ClassicTemplate({ resumeItem, watchItem }: Props): React.ReactElement {
+  const personalDetailsFields = [
+    "firstName",
+    "lastName",
+    "jobTitle",
+    "address1",
+    "address2",
+    "email",
+    "phone",
+    "socialLinks",
+  ] as const;
+  const personalDetails = useMemo(
+    () =>
+      personalDetailsFields.reduce<PersonalDetailType>(
+        (acc, field) => ({
+          ...acc,
+          [field]: getPersonalDetail(watchItem, resumeItem, field),
+        }),
+        identity.personalDetails
+      ),
+    [watchItem, resumeItem]
+  );
+
+  const workExperiences = useMemo(
+    () => watchItem?.workExperiences || resumeItem?.workExperiences || identity.workExperiences,
+    [watchItem, resumeItem]
+  );
   return (
     <div className="border p-10 font-serif text-sm md:p-20">
       <header className="mb-5">
         <div className="text-lg font-bold">
-          {form.watch("firstName") || firstName} {form.watch("lastName") || lastName}
+          <span>{personalDetails?.firstName} </span>
+          <span>{personalDetails?.lastName}</span>
         </div>
-        <div className="font-bold">{form.watch("jobTitle") || jobTitle}</div>
+        <div className="font-bold">{personalDetails?.jobTitle}</div>
         <div className="flex justify-between">
           <div>
-            {form.watch("address1") || address1} {form.watch("address2") || address2}
+            {personalDetails?.address1}
+            {personalDetails?.address2}
           </div>
-          <div>{form.watch("email") || email}</div>
+          <div>{personalDetails?.email}</div>
         </div>
         <div className="flex justify-between">
           <div>(469) 385-2948</div>
@@ -39,30 +77,18 @@ export default function ClassicTemplate(): React.ReactElement {
 
         <article className="mb-5">
           <div className="mb-3 text-lg font-bold">Professional Experience</div>
-
-          <section className="mb-3">
-            <div className="font-bold">Human Resources Manager</div>
-            <div className="flex justify-between">
-              <i>Jim&apos;s Widget Factory, Plano, TX</i>
-              <i>January 2016 - Present</i>
-            </div>
-            <ul>
-              <li>Developed engaging lesson plans that catered to diverse learning styles and abilities</li>
-              <li>Utilized technology resources to enhance the learning experience in the classroom</li>
-            </ul>
-          </section>
-
-          <section className="mb-3">
-            <div className="font-bold">Human Resources Associate</div>
-            <div className="flex justify-between">
-              <i>Jim&apos;s Widget Factory, Plano, TX</i>
-              <i>March 2015 - January 2016</i>
-            </div>
-            <ul>
-              <li>Developed engaging lesson plans that catered to diverse learning styles and abilities</li>
-              <li>Utilized technology resources to enhance the learning experience in the classroom</li>
-            </ul>
-          </section>
+          {workExperiences.map((workExperience, index) => (
+            <section key={index} className="mb-3">
+              <div className="font-bold">{workExperience.positionTitle}</div>
+              <div className="flex justify-between">
+                <i>{workExperience.companyName}</i>
+                <i>
+                  {workExperience.startDate} - {workExperience.endDate}
+                </i>
+              </div>
+              {workExperience.workSummary}
+            </section>
+          ))}
         </article>
 
         <article className="mb-5">

@@ -18,16 +18,24 @@ const ClassicTemplateDynamic = dynamic(() => import("@/components/resume/templat
 });
 
 export default function WorkExperience() {
-  const { getResumeItem } = useResumeStore((state) => state);
+  const activeResumeItem = useResumeStore((state) => state.getActiveResumeItem());
 
   const form = useForm<WorkExperienceManyType>({
     resolver: zodResolver(WorkExperienceManySchema),
-    defaultValues: { workExperiences: getResumeItem("workExperiences") ?? [WorkExperienceDefault] },
+    defaultValues: { workExperiences: activeResumeItem.workExperiences ?? [WorkExperienceDefault] },
   });
 
   return (
     <Form {...form}>
-      <ResumeContainer form={<WorkExperienceFormDynamic />} template={<ClassicTemplateDynamic />} />
+      <ResumeContainer
+        form={<WorkExperienceFormDynamic />}
+        template={
+          <ClassicTemplateDynamic
+            resumeItem={activeResumeItem}
+            watchItem={{ workExperiences: form.watch("workExperiences") }}
+          />
+        }
+      />
     </Form>
   );
 }
