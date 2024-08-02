@@ -5,7 +5,7 @@ export const identity = {
     jobTitle: "Human Resources Generalist",
     address1: "1600 Amphitheatre Parkway",
     address2: "Apartment 123",
-    phone: "1600 Amphitheatre Parkway",
+    phone: "+1 (827) 879-3224",
     email: "test@example.com",
     socialLinks: [
       {

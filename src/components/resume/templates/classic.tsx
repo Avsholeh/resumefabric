@@ -18,6 +18,7 @@ const getPersonalDetail = (
   watchItem?.personalDetails?.[field] || resumeItem?.personalDetails?.[field] || identity.personalDetails[field];
 
 export default function ClassicTemplate({ resumeItem, watchItem }: Props): React.ReactElement {
+  // Personal Details
   const personalDetailsFields = [
     "firstName",
     "lastName",
@@ -40,12 +41,21 @@ export default function ClassicTemplate({ resumeItem, watchItem }: Props): React
     [watchItem, resumeItem]
   );
 
-  const workExperiences = useMemo(
-    () => watchItem?.workExperiences || resumeItem?.workExperiences || identity.workExperiences,
-    [watchItem, resumeItem]
-  );
+  // Work Experiences
+  const workExperiences = useMemo(() => {
+    const keys = ["positionTitle", "companyName", "city", "state", "startDate", "endDate", "workSummary"] as const;
+    if (watchItem?.workExperiences && watchItem.workExperiences.length > 0) {
+      for (const key of keys) {
+        if (watchItem.workExperiences[0][key]) {
+          return watchItem.workExperiences;
+        }
+      }
+    }
+    return resumeItem?.workExperiences || identity.workExperiences;
+  }, [watchItem, resumeItem]);
+
   return (
-    <div className="border p-10 font-serif text-sm md:p-20">
+    <div className="border p-10 font-sans text-sm md:p-10">
       <header className="mb-5">
         <div className="text-lg font-bold">
           <span>{personalDetails?.firstName} </span>
@@ -54,16 +64,21 @@ export default function ClassicTemplate({ resumeItem, watchItem }: Props): React
         <div className="font-bold">{personalDetails?.jobTitle}</div>
         <div className="flex justify-between">
           <div>
-            {personalDetails?.address1}
-            {personalDetails?.address2}
+            <span>{personalDetails?.address1}</span>
+            {personalDetails?.address2 && <span>, {personalDetails?.address2}</span>}
           </div>
           <div>{personalDetails?.email}</div>
         </div>
         <div className="flex justify-between">
-          <div>(469) 385-2948</div>
+          <div>{personalDetails?.phone}</div>
           <div className="flex flex-col">
-            <div>Social Desc #1: Social Link #1</div>
-            <div>Social Desc #2: Social Link #2</div>
+            {personalDetails?.socialLinks?.map((socialLink, index) => (
+              <div key={index} className="text-end">
+                {socialLink.desc}
+                {socialLink.link && socialLink.desc && <span>: </span>}
+                {socialLink.link}
+              </div>
+            ))}
           </div>
         </div>
       </header>
@@ -81,9 +96,18 @@ export default function ClassicTemplate({ resumeItem, watchItem }: Props): React
             <section key={index} className="mb-3">
               <div className="font-bold">{workExperience.positionTitle}</div>
               <div className="flex justify-between">
-                <i>{workExperience.companyName}</i>
                 <i>
-                  {workExperience.startDate} - {workExperience.endDate}
+                  <span>{workExperience.companyName}</span>
+                  {workExperience.city && <span>, {workExperience.city}</span>}
+                  {workExperience.state && <span>, {workExperience.state}</span>}
+                </i>
+                <i>
+                  <span>{workExperience.startDate}</span>
+                  {workExperience.currentlyWorkingHere ? (
+                    <span> - Present</span>
+                  ) : (
+                    <span> - {workExperience.endDate}</span>
+                  )}
                 </i>
               </div>
               {workExperience.workSummary}

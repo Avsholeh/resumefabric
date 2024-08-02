@@ -108,7 +108,7 @@ export default function WorkExperienceForm(): React.ReactElement {
                           <FormItem className="w-full md:w-1/2">
                             <FormLabel>Position Title</FormLabel>
                             <FormControl>
-                              <Input {...field} />
+                              <Input {...field} autoComplete="organization-title" />
                             </FormControl>
                             <FormDescription />
                             <FormMessage />
@@ -123,7 +123,7 @@ export default function WorkExperienceForm(): React.ReactElement {
                           <FormItem className="w-full md:w-1/2">
                             <FormLabel>Company Name</FormLabel>
                             <FormControl>
-                              <Input {...field} />
+                              <Input {...field} autoComplete="organization" />
                             </FormControl>
                             <FormDescription />
                             <FormMessage />
@@ -140,7 +140,7 @@ export default function WorkExperienceForm(): React.ReactElement {
                           <FormItem className="w-full md:w-1/2">
                             <FormLabel>City</FormLabel>
                             <FormControl>
-                              <Input {...field} />
+                              <Input {...field} autoComplete="address-level2" />
                             </FormControl>
                             <FormDescription />
                             <FormMessage />
@@ -155,7 +155,7 @@ export default function WorkExperienceForm(): React.ReactElement {
                           <FormItem className="w-full md:w-1/2">
                             <FormLabel>State</FormLabel>
                             <FormControl>
-                              <Input {...field} />
+                              <Input {...field} autoComplete="address-level1" />
                             </FormControl>
                             <FormDescription />
                             <FormMessage />

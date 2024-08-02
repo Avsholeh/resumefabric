@@ -19,18 +19,23 @@ const ClassicTemplateDynamic = dynamic(() => import("@/components/resume/templat
 
 export default function EducationFormPage() {
   // This hook returns the resume store and the update function
-  const { getResumeItem, updateResumeItem } = useResumeStore((state) => state);
+  const activeResumeItem = useResumeStore((state) => state.getActiveResumeItem());
 
   // Use the useForm hook
   // https://react-hook-form.com/api/useform
   const form = useForm({
     resolver: zodResolver(EducationManySchema),
-    defaultValues: { educations: getResumeItem("educations") ?? [EducationDefault] },
+    defaultValues: { educations: activeResumeItem.educations ?? [EducationDefault] },
   });
 
   return (
     <Form {...form}>
-      <ResumeContainer form={<EducationFormDynamic />} template={<ClassicTemplateDynamic />} />
+      <ResumeContainer
+        form={<EducationFormDynamic />}
+        template={
+          <ClassicTemplateDynamic resumeItem={activeResumeItem} watchItem={{ educations: form.watch("educations") }} />
+        }
+      />
     </Form>
   );
 }

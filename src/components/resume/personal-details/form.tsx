@@ -54,7 +54,7 @@ export default function PersonalDetailsForm(): React.ReactElement {
                     <FormItem className="w-full md:w-1/2">
                       <FormLabel>First Name</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input {...field} autoComplete="given-name" />
                       </FormControl>
                       <FormDescription />
                       <FormMessage />
@@ -69,7 +69,7 @@ export default function PersonalDetailsForm(): React.ReactElement {
                     <FormItem className="w-full md:w-1/2">
                       <FormLabel>Last Name</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input {...field} autoComplete="family-name" />
                       </FormControl>
                       <FormDescription />
                       <FormMessage />
@@ -86,7 +86,7 @@ export default function PersonalDetailsForm(): React.ReactElement {
                     <FormItem className="w-full">
                       <FormLabel>Job Title</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input {...field} autoComplete="organization-title" />
                       </FormControl>
                       <FormDescription />
                       <FormMessage />
@@ -103,7 +103,7 @@ export default function PersonalDetailsForm(): React.ReactElement {
                     <FormItem className="w-full md:w-1/2">
                       <FormLabel>Address 1</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input {...field} autoComplete="address-line1" />
                       </FormControl>
                       <FormDescription />
                       <FormMessage />
@@ -118,7 +118,7 @@ export default function PersonalDetailsForm(): React.ReactElement {
                     <FormItem className="w-full md:w-1/2">
                       <FormLabel>Address 2</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input {...field} autoComplete="address-line2" />
                       </FormControl>
                       <FormDescription />
                       <FormMessage />
