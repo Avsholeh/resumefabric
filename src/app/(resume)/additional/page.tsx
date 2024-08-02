@@ -19,17 +19,17 @@ const ClassicTemplateDynamic = dynamic(() => import("@/components/resume/templat
 
 export default function AdditionalPage() {
   // This hook is used to get the resume data from the context
-  const { getResumeItem } = useResumeStore((state) => state);
+  const activeResumeItem = useResumeStore((state) => state.getActiveResumeItem());
 
   // This hook is used to create a form instance
   const form = useForm<AdditionalType>({
     resolver: zodResolver(AdditionalSchema),
-    defaultValues: getResumeItem("additional") ?? AdditionalDefault,
+    defaultValues: activeResumeItem.additional ?? AdditionalDefault,
   });
 
   return (
     <Form {...form}>
-      <ResumeContainer form={<AdditionalFormDynamic />} template={<ClassicTemplateDynamic />} />
+      <ResumeContainer form={<AdditionalFormDynamic />} template={<ClassicTemplateDynamic resumeItem={activeResumeItem} watchItem={{additional: form.watch()}}/>} />
     </Form>
   );
 }

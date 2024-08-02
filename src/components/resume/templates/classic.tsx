@@ -19,27 +19,25 @@ const getPersonalDetail = (
 
 export default function ClassicTemplate({ resumeItem, watchItem }: Props): React.ReactElement {
   // Personal Details
-  const personalDetailsFields = [
-    "firstName",
-    "lastName",
-    "jobTitle",
-    "address1",
-    "address2",
-    "email",
-    "phone",
-    "socialLinks",
-  ] as const;
-  const personalDetails = useMemo(
-    () =>
-      personalDetailsFields.reduce<PersonalDetailType>(
-        (acc, field) => ({
-          ...acc,
-          [field]: getPersonalDetail(watchItem, resumeItem, field),
-        }),
-        identity.personalDetails
-      ),
-    [watchItem, resumeItem]
-  );
+  const personalDetails = useMemo(() => {
+    const personalDetailsFields = [
+      "firstName",
+      "lastName",
+      "jobTitle",
+      "address1",
+      "address2",
+      "email",
+      "phone",
+      "socialLinks",
+    ] as const;
+    return personalDetailsFields.reduce<PersonalDetailType>(
+      (acc, field) => ({
+        ...acc,
+        [field]: getPersonalDetail(watchItem, resumeItem, field),
+      }),
+      identity.personalDetails
+    );
+  }, [watchItem, resumeItem]);
 
   // Work Experiences
   const workExperiences = useMemo(() => {

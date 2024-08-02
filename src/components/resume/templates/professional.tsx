@@ -1,8 +1,8 @@
 "use client";
 
-import identity from "@/components/resume/templates/identity.json";
 import { PersonalDetailType } from "@/schema/personal-details";
 import { useFormContext } from "react-hook-form";
+import { identity } from "./identity";
 
 export default function ProfessionalTemplate(): React.ReactElement {
   const form = useFormContext<PersonalDetailType>();
@@ -44,7 +44,7 @@ export default function ProfessionalTemplate(): React.ReactElement {
               <h4 className="font-bold">Human Resources Manager</h4>
               <span className="text-sm text-gray-600">January 2016 - Present</span>
             </div>
-            <div className="mb-2 italic">Jim's Widget Factory, Plano, TX</div>
+            <div className="mb-2 italic">Jim&apos;s Widget Factory, Plano, TX</div>
             <ul className="list-disc pl-5">
               <li>Led a team of 5 HR professionals, overseeing all HR functions for a 200+ employee organization</li>
               <li>Reduced employee turnover by 15% through implementation of targeted retention strategies</li>
@@ -57,7 +57,7 @@ export default function ProfessionalTemplate(): React.ReactElement {
               <h4 className="font-bold">Human Resources Associate</h4>
               <span className="text-sm text-gray-600">March 2015 - January 2016</span>
             </div>
-            <div className="mb-2 italic">Jim's Widget Factory, Plano, TX</div>
+            <div className="mb-2 italic">Jim&apos;s Widget Factory, Plano, TX</div>
             <ul className="list-disc pl-5">
               <li>Assisted in the development and implementation of HR policies and procedures</li>
               <li>Conducted new employee orientations and managed the onboarding process</li>

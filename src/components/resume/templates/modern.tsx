@@ -1,8 +1,8 @@
 "use client";
 
-import identity from "@/components/resume/templates/identity.json";
 import { PersonalDetailType } from "@/schema/personal-details";
 import { useFormContext } from "react-hook-form";
+import { identity } from "./identity";
 
 export default function ModernTemplate(): React.ReactElement {
   const form = useFormContext<PersonalDetailType>();
@@ -45,7 +45,7 @@ export default function ModernTemplate(): React.ReactElement {
           <div className="mb-4">
             <h4 className="font-semibold">Human Resources Manager</h4>
             <div className="mb-1 flex justify-between text-sm text-gray-600">
-              <span>Jim's Widget Factory, Plano, TX</span>
+              <span>Jim&apos;s Widget Factory, Plano, TX</span>
               <span>January 2016 - Present</span>
             </div>
             <ul className="list-disc pl-5">
@@ -60,7 +60,7 @@ export default function ModernTemplate(): React.ReactElement {
           <div className="mb-4">
             <h4 className="font-semibold">Human Resources Associate</h4>
             <div className="mb-1 flex justify-between text-sm text-gray-600">
-              <span>Jim's Widget Factory, Plano, TX</span>
+              <span>Jim&apos;s Widget Factory, Plano, TX</span>
               <span>March 2015 - January 2016</span>
             </div>
             <ul className="list-disc pl-5">
