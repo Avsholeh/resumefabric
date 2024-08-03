@@ -1,8 +1,8 @@
 "use client";
 
 import BtnDelete from "@/components/shared/btn-delete";
-import DatePicker from "@/components/shared/date-picker";
 import FormButtonGroup from "@/components/shared/form-button-group";
+import { MonthYearPicker } from "@/components/shared/month-year-picker";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -10,15 +10,15 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { type WorkExperienceManyType } from "@/schema/work-experience";
+import { DEFAULT_DATE_FORMAT } from "@/lib/constants";
+import type { WorkExperienceManyType, WorkExperienceType } from "@/schema/work-experience";
 import { WorkExperienceDefault } from "@/store/resume/default";
 import { useResumeStore } from "@/store/resume/provider";
+import { format, parseISO } from "date-fns";
 import { ChevronsUpDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useFieldArray, useFormContext } from "react-hook-form";
-
-type watchFieldType = "positionTitle" | "companyName" | "startDate" | "endDate" | "currentlyWorkingHere";
 
 export default function WorkExperienceForm(): React.ReactElement {
   const router = useRouter();
@@ -47,7 +47,13 @@ export default function WorkExperienceForm(): React.ReactElement {
   };
 
   // Utility function to watch the field values
-  const watchField = (index: number, field: watchFieldType) => {
+  const watchField = (index: number, field: keyof WorkExperienceType) => {
+    if (field === "startDate" || field === "endDate") {
+      let modifiedValue = form.watch(`workExperiences.${index}.${field}`);
+      if (modifiedValue) {
+        return format(parseISO(modifiedValue), DEFAULT_DATE_FORMAT);
+      }
+    }
     return form.watch(`workExperiences.${index}.${field}`);
   };
 
@@ -172,7 +178,12 @@ export default function WorkExperienceForm(): React.ReactElement {
                           <FormItem className="flex w-full flex-col md:w-1/2">
                             <FormLabel>Start Date</FormLabel>
                             <FormControl>
-                              <DatePicker field={field} />
+                              <MonthYearPicker
+                                {...field}
+                                value={field.value}
+                                format={DEFAULT_DATE_FORMAT}
+                                onChange={(value) => field.onChange(value)}
+                              />
                             </FormControl>
                             <FormDescription />
                             <FormMessage />
@@ -187,7 +198,13 @@ export default function WorkExperienceForm(): React.ReactElement {
                           <FormItem className="flex w-full flex-col md:w-1/2">
                             <FormLabel>End Date</FormLabel>
                             <FormControl>
-                              <DatePicker field={field} disabled={!!watchField(index, "currentlyWorkingHere")} />
+                              <MonthYearPicker
+                                {...field}
+                                value={field.value}
+                                format={DEFAULT_DATE_FORMAT}
+                                onChange={(value) => field.onChange(value)}
+                                disabled={!!watchField(index, "currentlyWorkingHere")}
+                              />
                             </FormControl>
                             <FormDescription />
                             <FormMessage />

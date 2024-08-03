@@ -29,7 +29,10 @@ export default function AdditionalPage() {
 
   return (
     <Form {...form}>
-      <ResumeContainer form={<AdditionalFormDynamic />} template={<ClassicTemplateDynamic resumeItem={activeResumeItem} watchItem={{additional: form.watch()}}/>} />
+      <ResumeContainer
+        form={<AdditionalFormDynamic />}
+        template={<ClassicTemplateDynamic resumeItem={activeResumeItem} watchItem={{ additional: form.watch() }} />}
+      />
     </Form>
   );
 }

@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Form } from "@/components/ui/form";
 import { AdditionalType } from "@/schema/additional";
 import { useResumeStore } from "@/store/resume/provider";
+import { Clipboard, CogIcon, ComputerIcon, HandshakeIcon, MedalIcon, Scroll, Speech } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useFieldArray, useFormContext } from "react-hook-form";
 import SoftwareForm from "./software-form";
@@ -53,13 +54,41 @@ export default function AdditionalForm(): React.ReactElement {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
-              <CardSection onClick={() => handleClickSection("custom_section")}>Custom Section</CardSection>
-              <CardSection onClick={() => handleClickSection("certifications")}>Certifications</CardSection>
-              <CardSection onClick={() => handleClickSection("accomplishments")}>Accomplishments</CardSection>
-              <CardSection onClick={() => handleClickSection("volunteering")}>Volunteering</CardSection>
-              <CardSection onClick={() => handleClickSection("software")}>Software</CardSection>
-              <CardSection onClick={() => handleClickSection("language")}>Language</CardSection>
-              <CardSection onClick={() => handleClickSection("references")}>References</CardSection>
+              <CardSection onClick={() => handleClickSection("custom_section")}>
+                <div className="flex justify-start space-x-2">
+                  <CogIcon className="text-primary opacity-50" /> <span>Custom Section</span>
+                </div>
+              </CardSection>
+              <CardSection onClick={() => handleClickSection("certifications")}>
+                <div className="flex justify-start space-x-2">
+                  <Scroll className="text-primary opacity-50" /> <span>Certifications</span>
+                </div>
+              </CardSection>
+              <CardSection onClick={() => handleClickSection("accomplishments")}>
+                <div className="flex justify-start space-x-2">
+                  <MedalIcon className="text-primary opacity-50" /> <span>Accomplishments</span>
+                </div>
+              </CardSection>
+              <CardSection onClick={() => handleClickSection("volunteering")}>
+                <div className="flex justify-start space-x-2">
+                  <HandshakeIcon className="text-primary opacity-50" /> <span>Volunteering</span>
+                </div>
+              </CardSection>
+              <CardSection onClick={() => handleClickSection("software")}>
+                <div className="flex justify-start space-x-2">
+                  <ComputerIcon className="text-primary opacity-50" /> <span>Software</span>
+                </div>
+              </CardSection>
+              <CardSection onClick={() => handleClickSection("language")}>
+                <div className="flex justify-start space-x-2">
+                  <Speech className="text-primary opacity-50" /> <span>Language</span>
+                </div>
+              </CardSection>
+              <CardSection onClick={() => handleClickSection("references")}>
+                <div className="flex justify-start space-x-2">
+                  <Clipboard className="text-primary opacity-50" /> <span>References</span>
+                </div>
+              </CardSection>
             </div>
           </CardContent>
         </Card>

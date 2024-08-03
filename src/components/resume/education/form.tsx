@@ -1,8 +1,8 @@
 "use client";
 
 import BtnDelete from "@/components/shared/btn-delete";
-import DatePicker from "@/components/shared/date-picker";
 import FormButtonGroup from "@/components/shared/form-button-group";
+import { MonthYearPicker } from "@/components/shared/month-year-picker";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -10,15 +10,15 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { type EducationManyType } from "@/schema/education";
+import { DEFAULT_DATE_FORMAT } from "@/lib/constants";
+import { EducationType, type EducationManyType } from "@/schema/education";
 import { EducationDefault } from "@/store/resume/default";
 import { useResumeStore } from "@/store/resume/provider";
+import { format, parseISO } from "date-fns";
 import { ChevronsUpDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useFieldArray, useFormContext } from "react-hook-form";
-
-type WatchFieldType = "schoolName" | "degree" | "startDate" | "endDate" | "currentlyStudyingHere";
 
 export default function EducationForm(): React.ReactElement {
   const router = useRouter();
@@ -41,7 +41,13 @@ export default function EducationForm(): React.ReactElement {
   });
 
   // Watch a field in the education array
-  const watchField = (index: number, field: WatchFieldType) => {
+  const watchField = (index: number, field: keyof EducationType) => {
+    if (field === "startDate" || field === "endDate") {
+      let modifiedValue = form.watch(`educations.${index}.${field}`);
+      if (modifiedValue) {
+        return format(parseISO(modifiedValue), DEFAULT_DATE_FORMAT);
+      }
+    }
     return form.watch(`educations.${index}.${field}`);
   };
 
@@ -171,7 +177,12 @@ export default function EducationForm(): React.ReactElement {
                           <FormItem className="w-full md:w-1/2">
                             <FormLabel>Start Date</FormLabel>
                             <FormControl>
-                              <DatePicker field={field} />
+                              <MonthYearPicker
+                                {...field}
+                                value={field.value}
+                                format={DEFAULT_DATE_FORMAT}
+                                onChange={(value) => field.onChange(value)}
+                              />
                             </FormControl>
                             <FormDescription />
                             <FormMessage />
@@ -186,7 +197,13 @@ export default function EducationForm(): React.ReactElement {
                           <FormItem className="w-full md:w-1/2">
                             <FormLabel>End Date</FormLabel>
                             <FormControl>
-                              <DatePicker field={field} disabled={!!watchField(index, "currentlyStudyingHere")} />
+                              <MonthYearPicker
+                                {...field}
+                                value={field.value}
+                                format={DEFAULT_DATE_FORMAT}
+                                onChange={(value) => field.onChange(value)}
+                                disabled={!!watchField(index, "currentlyStudyingHere")}
+                              />
                             </FormControl>
                             <FormDescription />
                             <FormMessage />

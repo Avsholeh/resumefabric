@@ -82,4 +82,10 @@ export const identity = {
       },
     ],
   },
+  summary: {
+    hideProfilePicture: false,
+    profilePicture: "",
+    description:
+      "Human resources generalist with 8 years of experience in HR, including hiring and terminating, disciplining employees and helping department managers improve employee performance. Worked with labor unions to negotiate compensation packages for workers.",
+  },
 };

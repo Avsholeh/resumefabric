@@ -16,7 +16,7 @@ export const SummarySchema = z.object({
         message: "File must be an image",
       })
   ),
-  summary: z.string().max(1000, { message: "Summary must not exceed 1000 characters" }),
+  description: z.string().max(1000, { message: "Summary must not exceed 1000 characters" }).optional(),
 });
 
 // Define a type alias for the inferred type of the schema

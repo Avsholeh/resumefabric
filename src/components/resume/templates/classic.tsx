@@ -1,56 +1,16 @@
 "use client";
 
-import { PersonalDetailType } from "@/schema/personal-details";
+import useTemplateValues from "@/hooks/use-template-values";
+import { formatPeriod } from "@/lib/utils";
 import { ResumeItemType } from "@/schema/resume";
-import { useMemo } from "react";
-import { identity } from "./identity";
 
 type Props = {
-  resumeItem: ResumeItemType;
-  watchItem: Partial<ResumeItemType>;
+  resumeItem?: ResumeItemType;
+  watchItem?: Partial<ResumeItemType>;
 };
 
-const getPersonalDetail = (
-  watchItem: Partial<ResumeItemType>,
-  resumeItem: ResumeItemType,
-  field: keyof PersonalDetailType
-): PersonalDetailType[keyof PersonalDetailType] =>
-  watchItem?.personalDetails?.[field] || resumeItem?.personalDetails?.[field] || identity.personalDetails[field];
-
 export default function ClassicTemplate({ resumeItem, watchItem }: Props): React.ReactElement {
-  // Personal Details
-  const personalDetails = useMemo(() => {
-    const personalDetailsFields = [
-      "firstName",
-      "lastName",
-      "jobTitle",
-      "address1",
-      "address2",
-      "email",
-      "phone",
-      "socialLinks",
-    ] as const;
-    return personalDetailsFields.reduce<PersonalDetailType>(
-      (acc, field) => ({
-        ...acc,
-        [field]: getPersonalDetail(watchItem, resumeItem, field),
-      }),
-      identity.personalDetails
-    );
-  }, [watchItem, resumeItem]);
-
-  // Work Experiences
-  const workExperiences = useMemo(() => {
-    const keys = ["positionTitle", "companyName", "city", "state", "startDate", "endDate", "workSummary"] as const;
-    if (watchItem?.workExperiences && watchItem.workExperiences.length > 0) {
-      for (const key of keys) {
-        if (watchItem.workExperiences[0][key]) {
-          return watchItem.workExperiences;
-        }
-      }
-    }
-    return resumeItem?.workExperiences || identity.workExperiences;
-  }, [watchItem, resumeItem]);
+  const { personalDetails, workExperiences, educations, summary } = useTemplateValues(resumeItem, watchItem);
 
   return (
     <div className="border p-10 font-sans text-sm md:p-10">
@@ -82,11 +42,7 @@ export default function ClassicTemplate({ resumeItem, watchItem }: Props): React
       </header>
 
       <main>
-        <section className="mb-5 font-bold">
-          Human resources generalist with 8 years of experience in HR, including hiring and terminating, disciplining
-          employees and helping department managers improve employee performance. Worked with labor unions to negotiate
-          compensation packages for workers.
-        </section>
+        <section className="mb-5 font-bold">{summary.description}</section>
 
         <article className="mb-5">
           <div className="mb-3 text-lg font-bold">Professional Experience</div>
@@ -94,19 +50,14 @@ export default function ClassicTemplate({ resumeItem, watchItem }: Props): React
             <section key={index} className="mb-3">
               <div className="font-bold">{workExperience.positionTitle}</div>
               <div className="flex justify-between">
-                <i>
+                <div className="italic">
                   <span>{workExperience.companyName}</span>
                   {workExperience.city && <span>, {workExperience.city}</span>}
                   {workExperience.state && <span>, {workExperience.state}</span>}
-                </i>
-                <i>
-                  <span>{workExperience.startDate}</span>
-                  {workExperience.currentlyWorkingHere ? (
-                    <span> - Present</span>
-                  ) : (
-                    <span> - {workExperience.endDate}</span>
-                  )}
-                </i>
+                </div>
+                <div className="italic">
+                  {formatPeriod(workExperience.startDate, workExperience.endDate, workExperience.currentlyWorkingHere)}
+                </div>
               </div>
               {workExperience.workSummary}
             </section>
@@ -115,13 +66,24 @@ export default function ClassicTemplate({ resumeItem, watchItem }: Props): React
 
         <article className="mb-5">
           <div className="mb-3 text-lg font-bold">Education</div>
-          <section className="mb-3">
-            <div className="flex justify-between">
-              <div>Masters in Human Resources</div>
-              <div>September 2007 - May 2011</div>
-            </div>
-            <div>The University of Texas at Dallas</div>
-          </section>
+          {educations.map((education, index) => (
+            <section key={index} className="mb-3">
+              <div className="flex justify-between">
+                <div className="italic">
+                  <span>{education.schoolName}</span>
+                  {education.schoolLocation && <span>at {education.schoolLocation}</span>}
+                </div>
+                <div className="italic">
+                  {formatPeriod(education.startDate, education.endDate, education.currentlyStudyingHere)}
+                </div>
+              </div>
+              <div>
+                <span>{education.degree}</span>
+                {education.fieldStudy && <span>, {education.fieldStudy}</span>}
+              </div>
+              {education.educationSummary}
+            </section>
+          ))}
         </article>
 
         <article className="mb-5">

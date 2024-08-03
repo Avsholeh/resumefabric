@@ -63,7 +63,7 @@ export const AdditionalDefault: AdditionalType = {
 export const SummaryDefault: SummaryType = {
   hideProfilePicture: false,
   profilePicture: "",
-  summary: "",
+  description: "",
 };
 
 export const ResumeDefault: ResumeType = {

@@ -9,12 +9,16 @@ import { FormControl, FormField, FormItem, FormLabel } from "@/components/ui/for
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { SummaryType } from "@/schema/summary";
+import { useResumeStore } from "@/store/resume/provider";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import { SubmitHandler, useFormContext } from "react-hook-form";
 
 export default function SummaryForm(): React.ReactElement {
   const router = useRouter();
+
+  // This hook is used to get the resume and update the resume
+  const { updateResumeItem } = useResumeStore((state) => state);
 
   // This hook is used to create a reference to the file upload input element
   const fileUploadRef = useRef<HTMLInputElement>(null);
@@ -24,8 +28,8 @@ export default function SummaryForm(): React.ReactElement {
   const form = useFormContext<SummaryType>();
 
   const onSubmit: SubmitHandler<SummaryType> = (fieldValue) => {
-    console.log(fieldValue);
-    // router.push("/final");
+    updateResumeItem("summary", fieldValue);
+    router.push("/final");
   };
 
   return (
@@ -97,7 +101,7 @@ export default function SummaryForm(): React.ReactElement {
           </div>
 
           <FormField
-            name="summary"
+            name="description"
             control={form.control}
             render={({ field }) => (
               <FormItem className="mb-2 w-full">

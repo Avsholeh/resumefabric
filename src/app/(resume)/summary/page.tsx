@@ -20,6 +20,9 @@ const ClassicTemplateDynamic = dynamic(() => import("@/components/resume/templat
 export default function SummaryPage() {
   const { getResumeItem } = useResumeStore((state) => state);
 
+  // Use the useResume hook to get the resume and update the resume
+  const activeResumeItem = useResumeStore((state) => state.getActiveResumeItem());
+
   const form = useForm({
     resolver: zodResolver(SummarySchema),
     defaultValues: getResumeItem("summary") ?? SummaryDefault,
@@ -27,7 +30,17 @@ export default function SummaryPage() {
 
   return (
     <Form {...form}>
-      <ResumeContainer form={<SummaryFormDynamic />} template={<ClassicTemplateDynamic />} />
+      <ResumeContainer
+        form={<SummaryFormDynamic />}
+        template={
+          <ClassicTemplateDynamic
+            resumeItem={activeResumeItem}
+            watchItem={{
+              summary: form.watch(),
+            }}
+          />
+        }
+      />
     </Form>
   );
 }
