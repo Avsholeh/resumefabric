@@ -35,7 +35,7 @@ export default function SoftwareForm({ fields, append, remove }: Props): React.R
           {isEdit ? (
             <>
               <FormField
-                name={`software.section`}
+                name={`softwares.section`}
                 control={form.control}
                 render={({ field }) => (
                   <FormItem ref={titleRef}>
@@ -49,7 +49,7 @@ export default function SoftwareForm({ fields, append, remove }: Props): React.R
             </>
           ) : (
             <>
-              <span className="mr-3">{form.watch("software.section")}</span>
+              <span className="mr-3">{form.watch("softwares.section")}</span>
               <Button variant={"ghost"} size={"sm"} onClick={() => setIsEdit(!isEdit)}>
                 <PencilIcon className="h-4 w-4" />
               </Button>

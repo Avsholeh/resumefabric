@@ -1,7 +1,7 @@
 "use client";
 
 import useTemplateValues from "@/hooks/use-template-values";
-import { formatPeriod } from "@/lib/utils";
+import { combineTextWithSeparator, formatPeriod, skillLevelText } from "@/lib/utils";
 import { ResumeItemType } from "@/schema/resume";
 
 type Props = {
@@ -10,7 +10,10 @@ type Props = {
 };
 
 export default function ClassicTemplate({ resumeItem, watchItem }: Props): React.ReactElement {
-  const { personalDetails, workExperiences, educations, summary } = useTemplateValues(resumeItem, watchItem);
+  const { personalDetails, workExperiences, educations, skills, additional, summary } = useTemplateValues(
+    resumeItem,
+    watchItem
+  );
 
   return (
     <div className="border p-10 font-sans text-sm md:p-10">
@@ -89,28 +92,34 @@ export default function ClassicTemplate({ resumeItem, watchItem }: Props): React
         <article className="mb-5">
           <div className="mb-3 text-lg font-bold">Key Skills</div>
           <section>
-            <ul>
-              <li>Detail oriented - Competent</li>
-              <li>Well-versed in Texas employment law - Competent</li>
-              <li>Excellent written and oral communication skills - Competent</li>
-              <li>Develops positive workplace relationships - Competent</li>
+            <ul className="list-disk">
+              {skills.items
+                .filter((skill) => skill.name)
+                .map((skill, index) => (
+                  <li key={index}>
+                    <span>{skill.name}</span>
+                    {skills.showExperienceLevel && <span> - {skillLevelText(skill.experienceLevel)}</span>}
+                  </li>
+                ))}
             </ul>
           </section>
         </article>
 
-        <article className="mb-5">
-          <div className="mb-3 text-lg font-bold">Certifications</div>
-          <div>
-            <div>Professional in Human Resources</div>
-            <div>September 2020</div>
-          </div>
-          <div>Human Resource Certification Institute (HRCI)</div>
-          <div>www.hrci.org/certifications/individual</div>
-          <div>
-            I earned the Professional in Human Resources certificate from the Human Resource Certification Institute
-            (HRCI).
-          </div>
-        </article>
+        {additional?.customSections && additional.customSections.items.length > 0 && (
+          <article className="mb-5">
+            <div className="mb-3 text-lg font-bold">{additional.customSections.section}</div>
+            {additional.customSections?.items.map((customSection, index) => (
+              <section key={index} className="mb-3">
+                <div className="flex justify-between">
+                  <div className="font-bold">{customSection.name}</div>
+                  <div className="italic">{formatPeriod(customSection.startDate, customSection.endDate)}</div>
+                </div>
+                <div>{combineTextWithSeparator(customSection.address1, customSection.address2)}</div>
+                <div>{customSection.summary}</div>
+              </section>
+            ))}
+          </article>
+        )}
       </main>
     </div>
   );

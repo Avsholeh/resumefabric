@@ -34,7 +34,7 @@ export default function SummaryForm(): React.ReactElement {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} id="summary-form">
-      <FormButtonGroup nextURL="/final" prevURL="/additional" showSkip />
+      <FormButtonGroup nextURL="/final" prevURL="/additional" isLoading={form.formState.isSubmitSuccessful} showSkip />
 
       <Card>
         <CardHeader>

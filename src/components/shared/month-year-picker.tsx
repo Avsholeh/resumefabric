@@ -14,6 +14,7 @@ import {
   startOfYear,
 } from "date-fns";
 import { forwardRef, useEffect, useMemo, useState } from "react";
+import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
@@ -35,33 +36,42 @@ const MonthYearPicker = forwardRef<HTMLInputElement, Props>(({ value, format, di
 
   useEffect(() => {
     if (!value) return;
+    console.log("rendered");
     const parsedDate = parseISO(value);
     setSelectedDate(parsedDate);
     setSelectedMonth(parsedDate.getMonth());
     setSelectedYear(parsedDate.getFullYear());
-  }, [value]);
+  }, []);
 
   const handleMonthChange = (month: number) => {
     let newDate = setMonth(selectedDate ?? DEFAULT_DATE, month);
-    // Ensure the day is valid in the new month
-    if (newDate.getMonth() !== month) {
+    // Correct the date if the day is invalid in the new month
+    if (newDate.getDate() > endOfMonth(newDate).getDate()) {
       newDate = endOfMonth(newDate);
     }
     setSelectedMonth(month);
     setSelectedDate(newDate);
+    // The actual value format is ISO 8601
     onChange(formatISO(newDate).toString());
   };
 
   const handleYearChange = (year: number) => {
     let newDate = setYear(selectedDate ?? DEFAULT_DATE, year);
-    // Ensure the day is valid in the new year (for February 29 on leap years)
-    if (newDate.getFullYear() !== year) {
+    // Correct the date if the day is invalid in the new year
+    if (newDate.getDate() > endOfMonth(newDate).getDate()) {
       newDate = endOfMonth(newDate);
     }
     setSelectedYear(year);
     setSelectedDate(newDate);
     // The actual value format is ISO 8601
     onChange(formatISO(newDate).toString());
+  };
+
+  const handleClear = () => {
+    setSelectedMonth(undefined);
+    setSelectedYear(undefined);
+    setSelectedDate(undefined);
+    onChange("");
   };
 
   const monthList = useMemo(() => {
@@ -101,45 +111,48 @@ const MonthYearPicker = forwardRef<HTMLInputElement, Props>(({ value, format, di
           />
         </PopoverTrigger>
         <PopoverContent className="w-80">
-          <div className="grid gap-4">
-            <div className="grid gap-2">
-              <div className="grid grid-cols-3 items-center gap-4">
-                <Label htmlFor="month">Month</Label>
-                <Select
-                  defaultValue={selectedMonth ? String(selectedMonth) : undefined}
-                  onValueChange={(value) => handleMonthChange(parseInt(value))}
-                >
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Select a month" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {monthList.map((month, index) => (
-                      <SelectItem key={index} value={String(month.value)}>
-                        {month.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="grid grid-cols-3 items-center gap-4">
-                <Label htmlFor="year">Year</Label>
-                <Select
-                  defaultValue={selectedYear ? String(selectedYear) : undefined}
-                  onValueChange={(value) => handleYearChange(parseInt(value))}
-                >
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Select a year" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {yearList.map((year, index) => (
-                      <SelectItem key={index} value={String(year.value)}>
-                        {year.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+          <div className="mb-3 grid gap-2">
+            <div className="grid grid-cols-3 items-center gap-4">
+              <Label htmlFor="month">Month</Label>
+              <Select
+                value={selectedMonth ? String(selectedMonth) : undefined}
+                onValueChange={(value) => handleMonthChange(parseInt(value))}
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Select a month" />
+                </SelectTrigger>
+                <SelectContent>
+                  {monthList.map((month, index) => (
+                    <SelectItem key={index} value={String(month.value)}>
+                      {month.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
+            <div className="grid grid-cols-3 items-center gap-4">
+              <Label htmlFor="year">Year</Label>
+              <Select
+                value={selectedYear ? String(selectedYear) : undefined}
+                onValueChange={(value) => handleYearChange(parseInt(value))}
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Select a year" />
+                </SelectTrigger>
+                <SelectContent>
+                  {yearList.map((year, index) => (
+                    <SelectItem key={index} value={String(year.value)}>
+                      {year.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <div className="flex justify-end">
+            <Button type="button" variant="outline" onClick={handleClear}>
+              Clear
+            </Button>
           </div>
         </PopoverContent>
       </Popover>

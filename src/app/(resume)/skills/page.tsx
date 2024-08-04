@@ -18,18 +18,21 @@ const ClassicTemplateDynamic = dynamic(() => import("@/components/resume/templat
 });
 
 export default function SkillPage() {
-  const { getResumeItem } = useResumeStore((state) => state);
+  const activeResumeItem = useResumeStore((state) => state.getActiveResumeItem());
 
   // Create a form with the useForm hook
   // https://react-hook-form.com/api/useform
   const form = useForm<SkillType>({
     resolver: zodResolver(SkillSchema),
-    defaultValues: getResumeItem("skills") ?? SkillsDefault,
+    defaultValues: activeResumeItem.skills ?? SkillsDefault,
   });
 
   return (
     <Form {...form}>
-      <ResumeContainer form={<SkillsFormDynamic />} template={<ClassicTemplateDynamic />} />
+      <ResumeContainer
+        form={<SkillsFormDynamic />}
+        template={<ClassicTemplateDynamic resumeItem={activeResumeItem} watchItem={{ skills: form.watch() }} />}
+      />
     </Form>
   );
 }

@@ -1,4 +1,5 @@
 import { identity } from "@/components/resume/templates/identity";
+import { AdditionalType } from "@/schema/additional";
 import { EducationType } from "@/schema/education";
 import { PersonalDetailType } from "@/schema/personal-details";
 import { ResumeItemType } from "@/schema/resume";
@@ -82,10 +83,39 @@ export default function useTemplateValues(resumeItem?: ResumeItemType, watchItem
 
   // Skills
   const skills = useMemo<SkillType>(() => {
-    return watchItem?.skills || resumeItem?.skills || identity.skills;
+    if (watchItem?.skills?.items && watchItem.skills.items.length > 0) {
+      if (watchItem.skills.items.some((item) => item.name)) {
+        return watchItem.skills;
+      }
+    }
+    if (resumeItem?.skills?.items && resumeItem.skills.items.length > 0) {
+      if (resumeItem.skills.items.some((item) => item.name)) {
+        return resumeItem.skills;
+      }
+    }
+    return identity.skills;
   }, [watchItem, resumeItem]);
 
   // Additional
+  const additional = useMemo<AdditionalType | undefined>(() => {
+    const keys = [
+      "customSections",
+      "accomplishments",
+      "affiliations",
+      "volunteering",
+      "certifications",
+      "references",
+      "interests",
+      "softwares",
+      "languages",
+    ] as const;
+    for (const key of keys) {
+      if (watchItem?.additional?.[key]?.items && watchItem.additional[key].items.length > 0) {
+        return watchItem.additional;
+      }
+    }
+    return resumeItem?.additional;
+  }, [watchItem, resumeItem]);
 
   // Summary
   const summary = (watchItem?.summary || resumeItem?.summary || identity.summary) as SummaryType;
@@ -95,6 +125,7 @@ export default function useTemplateValues(resumeItem?: ResumeItemType, watchItem
     workExperiences,
     educations,
     skills,
+    additional,
     summary,
   };
 }

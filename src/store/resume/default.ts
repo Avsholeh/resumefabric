@@ -1,4 +1,4 @@
-import type { AdditionalType } from "@/schema/additional";
+import type { AdditionalType, CustomSectionType, SoftwareType } from "@/schema/additional";
 import type { EducationType } from "@/schema/education";
 import type { PersonalDetailType } from "@/schema/personal-details";
 import type { ResumeType } from "@/schema/resume";
@@ -49,13 +49,55 @@ export const SkillsDefault: SkillType = {
   items: [SkillItemDefault],
 };
 
+export const CustomSectionDefault: CustomSectionType = {
+  name: "",
+  startDate: "",
+  endDate: "",
+  address1: "",
+  address2: "",
+  summary: "",
+};
+
+export const SoftwareDefault: SoftwareType = {
+  name: "",
+  level: 3,
+};
+
 export const AdditionalDefault: AdditionalType = {
-  // custom_section: false,
-  // certifications: false,
-  // accomplishments: false,
-  // volunteering: false,
-  software: {
-    section: "Software",
+  customSections: {
+    section: "Custom Sections",
+    items: [],
+  },
+  accomplishments: {
+    section: "Accomplishments",
+    items: [],
+  },
+  affiliations: {
+    section: "Affiliations",
+    items: [],
+  },
+  volunteering: {
+    section: "Volunteering",
+    items: [],
+  },
+  certifications: {
+    section: "Certifications",
+    items: [],
+  },
+  references: {
+    section: "References",
+    items: [],
+  },
+  interests: {
+    section: "Interests",
+    items: [],
+  },
+  softwares: {
+    section: "Softwares",
+    items: [],
+  },
+  languages: {
+    section: "Languages",
     items: [],
   },
 };

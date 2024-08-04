@@ -3,17 +3,20 @@
 import FormButtonGroup from "@/components/shared/form-button-group";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
+import { cn } from "@/lib/utils";
 import { AdditionalType } from "@/schema/additional";
+import { CustomSectionDefault, SoftwareDefault } from "@/store/resume/default";
 import { useResumeStore } from "@/store/resume/provider";
 import { Clipboard, CogIcon, ComputerIcon, HandshakeIcon, MedalIcon, Scroll, Speech } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useFieldArray, useFormContext } from "react-hook-form";
+import CustomSectionForm from "./custom-section-form";
 import SoftwareForm from "./software-form";
 
 export default function AdditionalForm(): React.ReactElement {
   const router = useRouter();
 
-  // This hook is used to get the resume data from the context
+  // Use the useResumeStore hook to get the updateResume function
   const { updateResumeItem } = useResumeStore((state) => state);
 
   // This hook is used to create a form instance with the useFormContext hook
@@ -21,24 +24,37 @@ export default function AdditionalForm(): React.ReactElement {
   const form = useFormContext<AdditionalType>();
 
   const {
+    fields: customFields,
+    append: customAppend,
+    remove: customRemove,
+  } = useFieldArray({
+    control: form.control,
+    name: "customSections.items",
+  });
+
+  const {
     fields: softwareFields,
     append: softwareAppend,
     remove: softwareRemove,
   } = useFieldArray({
     control: form.control,
-    name: "software.items",
+    name: "softwares.items",
   });
 
   // This function is used to handle the click event on the card section
   // It will append a new form if the section is clicked
   const handleClickSection = (section: string) => {
-    if (section === "software" && softwareFields.length === 0) {
-      softwareAppend({ name: "", level: 3 });
+    switch (section) {
+      case "custom_sections":
+        customAppend(CustomSectionDefault);
+        break;
+      case "softwares":
+        softwareAppend(SoftwareDefault);
+        break;
     }
   };
 
   const onSubmit: SubmitHandler<AdditionalType> = (fieldValue) => {
-    // updateResume<{ additional: AdditionalType }>({ additional: fieldValue });
     updateResumeItem("additional", fieldValue);
     router.push("/summary");
   };
@@ -46,7 +62,7 @@ export default function AdditionalForm(): React.ReactElement {
   return (
     <Form {...form}>
       <form id="additional-form" onSubmit={form.handleSubmit(onSubmit)}>
-        <FormButtonGroup nextURL="/summary" prevURL="/skills" showSkip isLoading={form.formState.isSubmitting} />
+        <FormButtonGroup nextURL="/summary" prevURL="/skills" showSkip isLoading={form.formState.isSubmitSuccessful} />
         <Card className="mb-5">
           <CardHeader>
             <CardTitle>Additional</CardTitle>
@@ -54,7 +70,7 @@ export default function AdditionalForm(): React.ReactElement {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
-              <CardSection onClick={() => handleClickSection("custom_section")}>
+              <CardSection onClick={() => handleClickSection("custom_sections")} disabled={customFields.length > 0}>
                 <div className="flex justify-start space-x-2">
                   <CogIcon className="text-primary opacity-50" /> <span>Custom Section</span>
                 </div>
@@ -74,12 +90,12 @@ export default function AdditionalForm(): React.ReactElement {
                   <HandshakeIcon className="text-primary opacity-50" /> <span>Volunteering</span>
                 </div>
               </CardSection>
-              <CardSection onClick={() => handleClickSection("software")}>
+              <CardSection onClick={() => handleClickSection("softwares")} disabled={softwareFields.length > 0}>
                 <div className="flex justify-start space-x-2">
                   <ComputerIcon className="text-primary opacity-50" /> <span>Software</span>
                 </div>
               </CardSection>
-              <CardSection onClick={() => handleClickSection("language")}>
+              <CardSection onClick={() => handleClickSection("languages")}>
                 <div className="flex justify-start space-x-2">
                   <Speech className="text-primary opacity-50" /> <span>Language</span>
                 </div>
@@ -93,6 +109,10 @@ export default function AdditionalForm(): React.ReactElement {
           </CardContent>
         </Card>
 
+        {customFields.length > 0 && (
+          <CustomSectionForm fields={customFields} remove={customRemove} append={customAppend} />
+        )}
+
         {softwareFields.length > 0 && (
           <SoftwareForm fields={softwareFields} remove={softwareRemove} append={softwareAppend} />
         )}
@@ -103,10 +123,11 @@ export default function AdditionalForm(): React.ReactElement {
 
 function CardSection({
   children,
+  disabled,
   ...restProps
-}: React.HTMLAttributes<HTMLDivElement> & { children: React.ReactNode }): React.ReactElement {
+}: React.HTMLAttributes<HTMLDivElement> & { children: React.ReactNode; disabled?: boolean }): React.ReactElement {
   return (
-    <Card className="cursor-pointer hover:scale-105" {...restProps}>
+    <Card className={cn("cursor-pointer", !disabled ? "hover:scale-[1.03]" : "")} {...restProps}>
       <CardContent className="p-4 text-center">{children}</CardContent>
     </Card>
   );
