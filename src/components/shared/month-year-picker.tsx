@@ -31,17 +31,11 @@ type Props = React.HTMLAttributes<HTMLInputElement> & {
 
 const MonthYearPicker = forwardRef<HTMLInputElement, Props>(({ value, format, disabled, onChange }, ref) => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const [selectedMonth, setSelectedMonth] = useState<number | undefined>(undefined);
-  const [selectedYear, setSelectedYear] = useState<number | undefined>(undefined);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    if (!value) return;
-    console.log("rendered");
-    const parsedDate = parseISO(value);
-    setSelectedDate(parsedDate);
-    setSelectedMonth(parsedDate.getMonth());
-    setSelectedYear(parsedDate.getFullYear());
-  }, []);
+    setSelectedDate(value ? parseISO(value) : undefined);
+  }, [value]);
 
   const handleMonthChange = (month: number) => {
     let newDate = setMonth(selectedDate ?? DEFAULT_DATE, month);
@@ -49,7 +43,6 @@ const MonthYearPicker = forwardRef<HTMLInputElement, Props>(({ value, format, di
     if (newDate.getDate() > endOfMonth(newDate).getDate()) {
       newDate = endOfMonth(newDate);
     }
-    setSelectedMonth(month);
     setSelectedDate(newDate);
     // The actual value format is ISO 8601
     onChange(formatISO(newDate).toString());
@@ -61,17 +54,15 @@ const MonthYearPicker = forwardRef<HTMLInputElement, Props>(({ value, format, di
     if (newDate.getDate() > endOfMonth(newDate).getDate()) {
       newDate = endOfMonth(newDate);
     }
-    setSelectedYear(year);
     setSelectedDate(newDate);
     // The actual value format is ISO 8601
     onChange(formatISO(newDate).toString());
   };
 
   const handleClear = () => {
-    setSelectedMonth(undefined);
-    setSelectedYear(undefined);
-    setSelectedDate(undefined);
+    setIsOpen(false);
     onChange("");
+    setSelectedDate(undefined);
   };
 
   const monthList = useMemo(() => {
@@ -98,65 +89,63 @@ const MonthYearPicker = forwardRef<HTMLInputElement, Props>(({ value, format, di
   }, []);
 
   return (
-    <>
-      <Popover>
-        <PopoverTrigger asChild>
-          <Input
-            value={selectedDate ? dateFnsFormat(selectedDate, format) : ""}
-            readOnly
-            placeholder="Pick a date"
-            className="text-start"
-            disabled={disabled}
-            ref={ref}
-          />
-        </PopoverTrigger>
-        <PopoverContent className="w-80">
-          <div className="mb-3 grid gap-2">
-            <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="month">Month</Label>
-              <Select
-                value={selectedMonth ? String(selectedMonth) : undefined}
-                onValueChange={(value) => handleMonthChange(parseInt(value))}
-              >
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Select a month" />
-                </SelectTrigger>
-                <SelectContent>
-                  {monthList.map((month, index) => (
-                    <SelectItem key={index} value={String(month.value)}>
-                      {month.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="year">Year</Label>
-              <Select
-                value={selectedYear ? String(selectedYear) : undefined}
-                onValueChange={(value) => handleYearChange(parseInt(value))}
-              >
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Select a year" />
-                </SelectTrigger>
-                <SelectContent>
-                  {yearList.map((year, index) => (
-                    <SelectItem key={index} value={String(year.value)}>
-                      {year.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+    <Popover open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
+      <PopoverTrigger asChild>
+        <Input
+          value={selectedDate ? dateFnsFormat(selectedDate, format) : ""}
+          readOnly
+          placeholder="Pick a date"
+          className="text-start"
+          disabled={disabled}
+          ref={ref}
+        />
+      </PopoverTrigger>
+      <PopoverContent className="w-80">
+        <div className="mb-3 grid gap-2">
+          <div className="grid grid-cols-3 items-center gap-4">
+            <Label htmlFor="month">Month</Label>
+            <Select
+              value={selectedDate ? selectedDate.getMonth().toString() : undefined}
+              onValueChange={(value) => handleMonthChange(parseInt(value))}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select a month" />
+              </SelectTrigger>
+              <SelectContent>
+                {monthList.map((month, index) => (
+                  <SelectItem key={index} value={String(month.value)}>
+                    {month.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
-          <div className="flex justify-end">
-            <Button type="button" variant="outline" onClick={handleClear}>
-              Clear
-            </Button>
+          <div className="grid grid-cols-3 items-center gap-4">
+            <Label htmlFor="year">Year</Label>
+            <Select
+              value={selectedDate ? selectedDate.getFullYear().toString() : undefined}
+              onValueChange={(value) => handleYearChange(parseInt(value))}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select a year" />
+              </SelectTrigger>
+              <SelectContent>
+                {yearList.map((year, index) => (
+                  <SelectItem key={index} value={String(year.value)}>
+                    {year.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
-        </PopoverContent>
-      </Popover>
-    </>
+        </div>
+        <div className="flex justify-end">
+          <Button type="button" variant="outline" onClick={handleClear}>
+            Clear
+          </Button>
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 });
 
