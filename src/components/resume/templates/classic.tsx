@@ -16,7 +16,7 @@ export default function ClassicTemplate({ resumeItem, watchItem }: Props): React
   );
 
   return (
-    <div className="border p-10 font-sans text-sm md:p-10">
+    <div className="h-full min-h-[75vh] border p-10 font-sans text-sm md:p-10">
       <header className="mb-5">
         <div className="text-lg font-bold">
           <span>{personalDetails?.firstName} </span>
@@ -45,14 +45,14 @@ export default function ClassicTemplate({ resumeItem, watchItem }: Props): React
       </header>
 
       <main>
-        <section className="mb-5 font-bold">{summary.description}</section>
+        <section className="mb-3 font-bold">{summary.description}</section>
 
-        <article className="mb-5">
-          <div className="mb-3 text-lg font-bold">Professional Experience</div>
+        <article className="mb-3">
+          <div className="mb-2 text-lg font-bold">Professional Experience</div>
           {workExperiences.map((workExperience, index) => (
             <section key={index} className="mb-3">
               <div className="font-bold">{workExperience.positionTitle}</div>
-              <div className="flex justify-between">
+              <div className="mb-1 flex justify-between">
                 <div className="italic">
                   <span>{workExperience.companyName}</span>
                   {workExperience.city && <span>, {workExperience.city}</span>}
@@ -67,11 +67,15 @@ export default function ClassicTemplate({ resumeItem, watchItem }: Props): React
           ))}
         </article>
 
-        <article className="mb-5">
-          <div className="mb-3 text-lg font-bold">Education</div>
+        <article className="mb-3">
+          <div className="mb-2 text-lg font-bold">Education</div>
           {educations.map((education, index) => (
             <section key={index} className="mb-3">
-              <div className="flex justify-between">
+              <div className="font-bold">
+                <span>{education.degree}</span>
+                {education.fieldStudy && <span>, {education.fieldStudy}</span>}
+              </div>
+              <div className="mb-1 flex justify-between">
                 <div className="italic">
                   <span>{education.schoolName}</span>
                   {education.schoolLocation && <span>at {education.schoolLocation}</span>}
@@ -80,17 +84,13 @@ export default function ClassicTemplate({ resumeItem, watchItem }: Props): React
                   {formatPeriod(education.startDate, education.endDate, education.currentlyStudyingHere)}
                 </div>
               </div>
-              <div>
-                <span>{education.degree}</span>
-                {education.fieldStudy && <span>, {education.fieldStudy}</span>}
-              </div>
               {education.educationSummary}
             </section>
           ))}
         </article>
 
-        <article className="mb-5">
-          <div className="mb-3 text-lg font-bold">Key Skills</div>
+        <article className="mb-3">
+          <div className="mb-2 text-lg font-bold">Key Skills</div>
           <section>
             <ul className="list-disk">
               {skills.items
