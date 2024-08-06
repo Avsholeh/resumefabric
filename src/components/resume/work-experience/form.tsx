@@ -68,7 +68,7 @@ export default function WorkExperienceForm(): React.ReactElement {
         nextURL="/education"
         prevURL="/personal-details"
         showSkip
-        isLoading={form.formState.isSubmitting}
+        isLoading={form.formState.isSubmitSuccessful}
       />
 
       <Card className="mb-20">
