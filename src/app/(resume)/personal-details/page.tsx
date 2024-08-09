@@ -13,7 +13,7 @@ const PersonalDetailsFormDynamic = dynamic(() => import("@/components/resume/per
   ssr: false, // Disable server side rendering for this component
 });
 
-const ClassicTemplateDynamic = dynamic(() => import("@/components/resume/templates/classic"), {
+const ClassicTemplateDynamic = dynamic(() => import("@/components/resume/templates/classic/classic"), {
   ssr: false, // Disable server side rendering for this component
 });
 

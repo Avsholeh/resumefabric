@@ -13,7 +13,7 @@ const EducationFormDynamic = dynamic(() => import("@/components/resume/education
   ssr: false, // This line is important. It's what prevents server-side render
 });
 
-const ClassicTemplateDynamic = dynamic(() => import("@/components/resume/templates/classic"), {
+const ClassicTemplateDynamic = dynamic(() => import("@/components/resume/templates/classic/classic"), {
   ssr: false, // Disable server side rendering for this component
 });
 

@@ -1,5 +1,5 @@
 import { ResumeType } from "@/schema/resume";
-import { v4 as uuidv4 } from "uuid";
+import { v7 as uuid } from "uuid";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
@@ -27,7 +27,7 @@ export const createResumeStore = (initState: ResumeState = initialResumeState) =
 
         createNewResume: () => {
           set((state) => {
-            const newUUID = uuidv4();
+            const newUUID = uuid();
             const nullResumeIndex = state.resumeList.findIndex((resume) => resume.id === null);
             if (nullResumeIndex !== -1) {
               state.resumeList[nullResumeIndex].id = newUUID;
@@ -55,7 +55,7 @@ export const createResumeStore = (initState: ResumeState = initialResumeState) =
           set((state) => {
             // If the activeResume is null, we need to create a new resume and set the activeResume to the new UUID
             if (state.activeResume === null) {
-              state.activeResume = uuidv4();
+              state.activeResume = uuid();
             }
 
             // Find the resume with the active UUID
