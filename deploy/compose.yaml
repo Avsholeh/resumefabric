@@ -1,0 +1,19 @@
+services:
+  resumefabric_app:
+    build:
+      context: ../
+      dockerfile: ./deploy/Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../storage:/app/storage
+    networks:
+      - resumefabric_network
+
+networks:
+  resumefabric_network:
+
+volumes:
+  postgres_data:
+  storage:
+

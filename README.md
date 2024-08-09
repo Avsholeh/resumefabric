@@ -4,11 +4,23 @@ ResumeFabric is a web application that allows users to create a resume by fillin
 
 ## Getting Started
 
-First, run the development server:
+### 1. Using npm
+
+Download node version 20.15 or higher from [Node.js](https://nodejs.org/). Then run the following commands:
 
 ```bash
 npm install     # Install dependencies
 npm run dev     # Run the development server
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+### 2. Using docker
+
+First, make sure you have [Docker](https://www.docker.com/) installed on your machine. Build and run the docker container:
+
+```bash
+docker-compose -f ./deploy/compose.yaml up --build
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
